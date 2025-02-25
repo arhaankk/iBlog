@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../styles/login.css">
+</head>
+<body>
+
+    <div class="login">
+        <video autoplay muted loop class="login__video">
+            <source src="../assets/bg.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <form action="login.php" method="POST" class="login__form"> 
+            <h2 class="login__title">Welcome to iBlog</h2>
+
+            <div class="login__content">
+                <div class="login__box">
+                    <i class="fas fa-envelope login__icon"></i>
+                    <div class="login__box-input">
+                        <input type="email" id="email" name="email" required class="login__input" placeholder=" ">
+                        <label for="email" class="login__label">Email</label>
+                    </div>
+                </div>
+
+                <div class="login__box">
+                    <i class="fas fa-lock login__icon"></i>
+                    <div class="login__box-input">
+                     <input type="password" required class="login__input" id="login-pass" placeholder=" ">
+                     <label for="login-pass" class="login__label">Password</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="login__check">
+                <div class="login__check-group">
+                    <input type="checkbox" id="remember" class="login__check-input">
+                    <label for="remember" class="login__check-label">Remember me</label>
+                </div>
+                <a href="#" class="login__forgot">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login__button">Login</button>
+
+            <p class="login__register">
+                Don't have an account? <a href="#">Register</a>
+            </p>
+        </form>
+    </div>
+
+   
+    
+</body>
+</html>
