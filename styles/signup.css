@@ -1,0 +1,83 @@
+/* General Form Styles */
+.signup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+}
+
+.signup__form {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Input Box */
+.signup__box {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.signup__icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: gray;
+}
+
+.signup__input {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+.signup__input:focus {
+    border-color: #0072ff;
+}
+
+/* Password Eye Icon */
+.signup__eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Button */
+.signup__button {
+    width: 100%;
+    background: #0072ff;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signup__button:hover {
+    background: #005bb5;
+}
+
+/* Login Redirect */
+.signup__login {
+    margin-top: 1rem;
+}
+.signup__login a {
+    color: #0072ff;
+    text-decoration: none;
+}
+.signup__login a:hover {
+    text-decoration: underline;
+}
