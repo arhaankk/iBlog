@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iBlog - Blog Writing</title>
+</head>
+<body>
+<header>
+    <h1>iBlog - Blog Writing</h1>
+    <nav>
+        <a href="admin.html">Admin Panel</a>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+<main>
+    <section>
+        <h2>Write Your Blog Post</h2>
+        <form id="blogForm" action="blog-write.php" method="POST" enctype="multipart/form-data">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="10" required></textarea>
+
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+
+            <button type="submit">Publish</button>
+        </form>
+    </section>
+</main>
+<script src="scripts/blog-write.js"></script>
+</body>
+</html>
