@@ -1,0 +1,299 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+
+/* Quick & dirty reset */
+*, *::before, *::after {
+	box-sizing: border-box; /* use border box */
+}
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+	margin: 0; /* nuke margins */
+}
+ul[role='list'], ol[role='list'] {
+	list-style: none; /* nuke list styling */
+}
+input, button, textarea, select {
+	font: inherit;
+	color: inherit;
+	background: inherit;
+}
+
+/* Document structure */
+:root {
+	--color-fg: #111;
+	--color-fg2: #222;
+	--color-bg: #ddd;
+	--color-bg2: hsla(0, 0%, 80%, 0.1);
+	--color-link: #0054b9;
+	--color-dim: hsla(0, 0%, 10%, 0.1);
+	--color-active: #4B657E;
+	--color-active2: #4B657E60;
+	--color-err: #d44;
+}
+body {
+	line-height: 1.5;
+	min-height: 100vh;
+	text-rendering: optimizeLegibility;
+	color: var(--color-fg);
+	background: var(--color-bg);
+	font-family: Poppins, sans-serif;
+	font-size: 14pt;
+}
+nav, main, footer {
+	width: 100%;
+	max-width: 1140px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+main {
+	margin: 1rem auto;
+	padding: 1rem 2rem;
+	border-radius: 1rem;
+}
+footer {
+	border-top: 0.1rem solid var(--color-fg2);
+	padding-top: 1rem;
+}
+.body__video {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	z-index: -1;
+	opacity: 0.5;
+	filter: contrast(1.75);
+}
+
+/* Element styling */
+main p {
+	padding: 0.5rem 0;
+}
+a {
+	text-decoration: none;
+	color: var(--color-link);
+}
+a:hover {
+	text-decoration: underline;
+}
+
+/* Forms */
+form.form--inline {
+	display: flex;
+}
+form * {
+	display: block; /* vertical form flow */
+}
+form.form--inline * {
+	display: inline;
+}
+form .actions * {
+	display: inline;
+}
+input, textarea {
+	border: 0.1rem solid var(--color-fg2);
+	border-radius: 0.4rem;
+}
+input.aria-invalid, div:has(div > input.aria-invalid) {
+	border-color: var(--color-err);
+}
+input + span.input-message {
+	display: none;
+}
+input.aria-invalid + span.input-message {
+	display: block;
+	color: var(--color-err);
+}
+button, .button, input[type=submit], input[type=reset] {
+	padding: 0.2rem 0.4rem;
+	border: 0.1rem solid var(--color-fg2);
+	border-radius: 0.4rem;
+	color: var(--color-fg);
+	text-decoration: none;
+	transition: 200ms;
+}
+button:hover, .button:hover,
+input[type=submit]:hover, input[type=reset]:hover {
+	background: var(--color-fg2);
+	color: var(--color-bg);
+}
+.button--active {
+	background: var(--color-active2);
+}
+.button--active:hover {
+	background: var(--color-active);
+	color: var(--color-bg);
+}
+
+/* Navbar */
+nav {
+	display: flex;
+	flex-basis: 0;
+	border-bottom: 0.1rem solid var(--color-fg2);
+}
+nav > * {
+	flex: 1;
+	text-align: center;
+	align-content: center;
+}
+nav > *:first-child {
+	text-align: left;
+}
+nav > *:last-child {
+	text-align: right;
+}
+.header-brand {
+	font-weight: bold;
+	font-size: 2rem;
+}
+.header-brand a, .header-acct a {
+	color: var(--color-fg);
+
+}
+.header-nav {
+	list-style: none;
+	display: flex;
+	gap: 1rem;
+}
+.header-nav > li + li::before {
+	content: '—';
+	margin-right: 1rem;
+}
+.header-nav > li > a {
+	color: var(--color-fg);
+}
+
+/* Dropdowns */
+.dropdown {
+	position: relative;
+}
+.dropdown:not(ul.dropdown)::after {
+	content: '▼';
+	opacity: 0.5;
+}
+.dropdown:not(ul.dropdown):hover::after {
+	opacity: 1;
+}
+.dropdown > ul.dropdown {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: 0.2rem;
+	padding: 0.2rem 1rem;
+	list-style: none;
+	border: 0.2rem solid var(--color-fg);
+	background: var(--color-bg2);
+	width: 16ch;
+}
+.dropdown:hover {
+	cursor: pointer;
+}
+.dropdown:hover > ul.dropdown {
+	display: block;
+	border-radius: 0.4rem;
+}
+.dropdown:hover > ul.dropdown > li > a {
+	color: var(--color-fg);
+}
+
+/* Misc */
+.text--preview {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/* Card styling */
+.card,
+.card--mini,
+.card--medium,
+.panes {
+	display: block;
+	border: 0.1rem solid var(--color-fg2);
+	border-radius: 0.4rem;
+	background: var(--color-bg2);
+	backdrop-filter: blur(0.4rem);
+	padding: 1.5rem;
+}
+.card--mini {
+	width: 80%;
+	min-width: 432px;
+	margin: auto;
+}
+.card--medium {
+	width: 90%;
+	min-width: 615px;
+	margin: auto;
+}
+
+/* Main writing area */
+.writer {
+	background: var(--color-bg2);
+	width: 100%;
+}
+
+/* Panes */
+.panes {
+	display: flex;
+}
+.pane {
+	padding: 0.4rem;
+}
+.pane > h2 {
+	border-bottom: 0.1rem solid var(--color-fg2);
+	padding-bottom: 0.4rem;
+}
+.panes > .pane {
+	flex: 1;
+}
+.pane + .pane {
+	border-left: 0.1rem solid var(--color-fg2);
+}
+.pane > ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.pane > ul > li {
+	display: block;
+	padding: 0.4rem;
+	border-radius: 0.4rem;
+}
+.pane > ul > li.active {
+	background: var(--color-active2);
+	border: 0.1rem solid var(--color-fg2);
+}
+.pane > ul > li > a {
+	color: var(--color-fg);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+	/* colours */
+	:root {
+		--color-fg: #ddd;
+		--color-fg2: #ddd8;
+		--color-bg: #111;
+		--color-bg2: #2228;
+		--color-link: #4893fd;
+	}
+	/* dim video and up contrast */
+	.body__video {
+		opacity: 0.2;
+		filter: contrast(1.75);
+	}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	/* nuke animations */
+	*, *::before, *::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+	/* disable video */
+	.body__video {
+		display: none;
+	}
+}
