@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Sign up — iBlog</title>
+	<link rel="stylesheet" href="../styles/style.css">
+	<link rel="stylesheet" href="../styles/signin-signup.css">
+	<meta name="description" content="The sign up page for iBlog">
+<body>
+<nav>
+	<span class="header-brand"><a href="index.html">iBlog</a></span>
+	<ul class="header-nav">
+		<li><a href="index.html">Home</a>
+		<li><a href="blogCard.html">My Blogs</a>
+		<li><a href="blog-write.html">Write</a>
+	</ul>
+	<div class="header-acct">
+		<div class="dropdown"><a href="profile.html">Profile</a>
+			<ul class="dropdown">
+				<li><a href="admin.html">Admin panel</a>
+				<li><a href="signin.html">Sign in</a>
+				<li><a href="signup.html">Sign up</a>
+				<li><a href="#">Log out</a>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<main>
+	<h1>Welcome to iBlog</h1>
+	<p>Please register with the form below.</p>
+	<div class="login">
+		<form action="register.php" method="POST" class="login__form">
+			<div class="login__content">
+				<div style="display: flex; gap: 10px;">
+					<div class="login__box" style="flex: 1;">
+						<i class="fas fa-user login__icon"></i>
+						<div class="login__box-input">
+							<input type="text" id="first-name" name="first-name" required class="login__input" placeholder=" ">
+							<label for="first-name" class="login__label">First Name</label>
+						</div>
+					</div>
+
+					<div class="login__box" style="flex: 1;">
+						<i class="fas fa-user login__icon"></i>
+						<div class="login__box-input">
+							<input type="text" id="last-name" name="last-name" required class="login__input" placeholder=" ">
+							<label for="last-name" class="login__label">Last Name</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="login__box">
+					<i class="fas fa-envelope login__icon"></i>
+					<div class="login__box-input">
+						<input type="email" id="email" name="email" required class="login__input" placeholder=" ">
+						<label for="email" class="login__label">Email</label>
+					</div>
+				</div>
+
+				<div style="display: flex; gap: 10px;">
+					<div class="login__box" style="flex: 1;">
+						<i class="fas fa-lock login__icon"></i>
+						<div class="login__box-input">
+							<input type="password" id="password" name="password" required class="login__input" placeholder=" ">
+							<label for="password" class="login__label">Password</label>
+						</div>
+					</div>
+
+					<div class="login__box" style="flex: 1;">
+						<i class="fas fa-lock login__icon"></i>
+						<div class="login__box-input">
+							<input type="password" id="confirm-password" name="confirm-password" required class="login__input" placeholder=" ">
+							<label for="confirm-password" class="login__label">Confirm</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="login__box">
+					<i class="fas fa-venus-mars login__icon"></i>
+					<div class="login__box-input" style="position: relative;">
+						<select id="gender" name="gender" required class="login__input" style="appearance: none; background: transparent; border: none; width: 100%; padding: 10px; font-size: 16px; cursor: pointer;">
+							<option value="" disabled selected></option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
+							<option value="other">Other</option>
+						</select>
+						<label for="gender" class="login__label">Gender</label>
+						<i class="fas fa-chevron-down" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+					</div>
+				</div>
+
+				<div class="login__box">
+					<i class="fas fa-birthday-cake login__icon"></i>
+					<div class="login__box-input">
+						<input type="number" id="age" name="age" required class="login__input" placeholder=" " min="1">
+						<label for="age" class="login__label">Age</label>
+					</div>
+				</div>
+				<div class="login__box">
+					<i class="fas fa-user login__icon"></i>
+					<div class="login__box-input">
+						<input type="file" id="avatar" name="avatar" class="login__input" accept="image/png, image/gif, image/jpeg">
+						<label for="avatar" class="login__label">Profile Picture</label>
+					</div>
+				</div>
+			</div>
+		<button type="submit" class="login__button">Submit</button>
+
+		<p class="login__register">
+			Already have an account? <a href="../pages/signin.html">Login</a>
+		</p>
+	</form></div>
+</main>
+
+<script>
+/* Temporary validation for the sign-up form */
+document.querySelector('.login > form').addEventListener('submit', (e) => {
+	const f = e.target.elements;
+	if (f['password'].value !== f['confirm-password'].value) {
+		e.preventDefault();
+		f['password'].classList.add('aria-invalid');
+		f['confirm-password'].classList.add('aria-invalid');
+		alert('Password confirmation must match password');
+		return;
+	} else {
+		f['password'].classList.remove('aria-invalid');
+		f['confirm-password'].classList.remove('aria-invalid');
+	}
+	if (parseInt(f['age'].value) < 18 || parseInt(f['age'].value) > 150) {
+		e.preventDefault();
+		f['age'].classList.add('aria-invalid');
+		alert('Age must be within 18 and 150');
+	} else {
+		f['age'].classList.remove('aria-invalid');
+	}
+});
+</script>
+
+<footer>
+	<small>&copy; iBlog 2025</small>
+</footer>
