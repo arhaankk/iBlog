@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>iBlog</title>
+	<link rel="stylesheet" href="../styles/style.css">
+	<link rel="stylesheet" href="../styles/blogCard.css">
+	<meta name="description" content="The administrator page for iBlog">
+<body>
+<nav>
+	<span class="header-brand"><a href="index.html">iBlog</a></span>
+	<ul class="header-nav">
+		<li><a href="index.html">Home</a>
+		<li><a href="blogCard.html">My Blogs</a>
+		<li><a href="blog-write.html">Write</a>
+	</ul>
+	<div class="header-acct">
+		<div class="dropdown"><a href="profile.html">Profile</a>
+			<ul class="dropdown">
+				<li><a href="admin.html">Admin panel</a>
+				<li><a href="signin.html">Sign in</a>
+				<li><a href="signup.html">Sign up</a>
+				<li><a href="#">Log out</a>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<main>
+    <h1>iBlog</h1>
+    <p>Welcome to my iBlog!</p>
+    <a href="signin.html" class="button">Log In</a>
+    <a href="blog-write.html" class="button">Write Post</a>
+    <hr>
+    <h2>Recent activity</h2>
+        <div class="card--mini">
+            <img src="../images/profilePic.jpg" alt="User1 Profile Picture" class="post-avatar">
+            <strong class="post-user-name">Cynthia: </strong>
+            <h2>Blog Title 1</h2>
+            <div class="blog-content-text">
+                <p class="text--preview">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+            </div>
+            <div>
+				<a href="blogCard.html" class="button">Full Post</a>
+            </div>
+        </div>
+</main>
+
+<footer>
+	<small>&copy; iBlog 2025</small>
+</footer>
