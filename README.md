@@ -2,8 +2,8 @@
 
 **Team Members:**  
 - **Arhaan Khaku**  
-- **Bradan**  
-- **Germain**
+- **Bradan Fleming**
+- **Germain So**
 
 **University:**  
 University of British Columbia (UBC)
