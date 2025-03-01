@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Log in — iBlog</title>
+	<link rel="stylesheet" href="../styles/style.css">
+	<link rel="stylesheet" href="../styles/signin-signup.css">
+	<meta name="description" content="The sign in page for iBlog">
+<body>
+<nav>
+	<span class="header-brand"><a href="index.html">iBlog</a></span>
+	<ul class="header-nav">
+		<li><a href="index.html">Home</a>
+		<li><a href="blogCard.html">My Blogs</a>
+		<li><a href="blog-write.html">Write</a>
+	</ul>
+	<div class="header-acct">
+		<div class="dropdown"><a href="profile.html">Profile</a>
+			<ul class="dropdown">
+				<li><a href="admin.html">Admin panel</a>
+				<li><a href="signin.html">Sign in</a>
+				<li><a href="signup.html">Sign up</a>
+				<li><a href="#">Log out</a>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<main>
+	<h1>Welcome to iBlog</h1>
+	<p>Please sign in with the form below.</p>
+	<div class="login">
+		<form action="login.php" method="POST" class="login__form">
+			<div class="login__content">
+				<div class="login__box">
+					<i class="fas fa-envelope login__icon"></i>
+					<div class="login__box-input">
+						<input type="text" id="user" name="user" required class="login__input" placeholder=" ">
+						<label for="user" class="login__label">Username</label>
+					</div>
+				</div>
+
+				<div class="login__box">
+					<i class="fas fa-lock login__icon"></i>
+					<div class="login__box-input">
+					 <input type="password" required class="login__input" id="login-pass" placeholder=" ">
+					 <label for="login-pass" class="login__label">Password</label>
+				  </div>
+				</div>
+			</div>
+
+			<div class="login__check">
+				<div class="login__check-group">
+					<input type="checkbox" id="remember" class="login__check-input">
+					<label for="remember" class="login__check-label">Remember me</label>
+				</div>
+				<a href="#" class="login__forgot">Forgot Password?</a>
+			</div>
+
+			<button type="submit" class="login__button">Login</button>
+
+			<p class="login__register">
+				Don't have an account? <a href="../pages/signup.html">Register</a>
+			</p>
+		</form>
+	</div>
+</main>
+
+<footer>
+	<small>&copy; iBlog 2025</small>
+</footer>
