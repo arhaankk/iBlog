@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="../styles/style.css">
 	<link rel="stylesheet" href="../styles/blogCard.css">
 	<meta name="description" content="The administrator page for iBlog">
+</head>
 <body>
 <nav>
 	<span class="header-brand"><a href="index.html">iBlog</a></span>
@@ -57,7 +58,7 @@
 			</div>
 			<div class="comment-form">
 				<form id="commentForm" class="form--inline" action="addComment.php" method="POST">
-					<input type="text" id="commentInput" placeholder="Add a comment...">
+					<label for="commentInput"></label><input type="text" id="commentInput" placeholder="Add a comment...">
 					<button type="button" onclick="addComment(event)">Submit</button>
 				</form>
 			</div>
