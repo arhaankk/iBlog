@@ -69,9 +69,6 @@ if (!isset($_GET['id'])) {
 </nav>
 
 <main>
-    <h1><?php echo $authorUserName; ?>'s Blog</h1>
-    <p>Welcome to my blog!</p>
-    <hr>
     <section class="card--medium">
         <div class="blog-content">
             <img src="../images/profilePic.jpg" alt="User1 Profile Picture" class="post-avatar">
@@ -104,23 +101,23 @@ if (!isset($_GET['id'])) {
 
 
         <!--        todo handle comments from db-->
-        <div class="comments">
-            <h3>Comments</h3>
-            <div class="comment">
-                <img src="../images/profilePic.jpg" alt="User1 Profile Picture" class="comment-avatar">
-                <strong>Jack: </strong> Great post!
-            </div>
-            <div class="comment">
-                <img src="../images/profilePic2.jpg" alt="User2 Profile Picture" class="comment-avatar">
-                <strong>Tom: </strong> Thanks for sharing!
-            </div>
-            <div class="comment-form">
-                <form id="commentForm" class="form--inline" action="addComment.php" method="POST">
-                    <input type="text" id="commentInput" placeholder="Add a comment...">
-                    <button type="button" onclick="addComment(event)">Submit</button>
-                </form>
-            </div>
-        </div>
+<!--        <div class="comments">-->
+<!--            <h3>Comments</h3>-->
+<!--            <div class="comment">-->
+<!--                <img src="../images/profilePic.jpg" alt="User1 Profile Picture" class="comment-avatar">-->
+<!--                <strong>Jack: </strong> Great post!-->
+<!--            </div>-->
+<!--            <div class="comment">-->
+<!--                <img src="../images/profilePic2.jpg" alt="User2 Profile Picture" class="comment-avatar">-->
+<!--                <strong>Tom: </strong> Thanks for sharing!-->
+<!--            </div>-->
+<!--            <div class="comment-form">-->
+<!--                <form id="commentForm" class="form--inline" action="addComment.php" method="POST">-->
+<!--                    <input type="text" id="commentInput" placeholder="Add a comment...">-->
+<!--                    <button type="button" onclick="addComment(event)">Submit</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
     </section>
 </main>
 
