@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo <<<HTML
             <script>
                 setTimeout(function() {
-                    window.location.href = "post-view.php?id=$postId";
+                    window.location.href = "single-post-view.php?id=$postId";
                 }, 1500); // Redirect after 1.5 seconds
             </script>
 HTML;
