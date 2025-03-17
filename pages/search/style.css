@@ -1,0 +1,36 @@
+/* Custom Styles for Dark Theme */
+.card--medium {
+    background: var(--color-bg2);
+    border: 0.1rem solid var(--color-fg2);
+}
+
+#resultsContainer .card {
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+#resultsContainer .card:hover {
+    transform: scale(1.02);
+}
+
+/* Input Fields */
+.form-control {
+    background: var(--color-bg2);
+    color: var(--color-fg);
+    border: 0.1rem solid var(--color-fg2);
+}
+
+.form-control:focus {
+    border-color: var(--color-active);
+    box-shadow: 0 0 0 0.2rem rgba(75, 101, 126, 0.25);
+}
+
+/* Buttons */
+.button--active {
+    background: var(--color-active);
+    color: var(--color-bg);
+}
+
+.button--active:hover {
+    background: var(--color-active2);
+}
