@@ -3,8 +3,9 @@ USE iblog;
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,   
-    first_name VARCHAR(50) NOT NULL,     
-    last_name VARCHAR(50) NOT NULL,    
+    firstname VARCHAR(50) NOT NULL,     
+    lastname VARCHAR(50) NOT NULL,    
+    username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE, 
     password VARCHAR(255) NOT NULL,      
     gender ENUM('male', 'female', 'other') NOT NULL,  
@@ -13,13 +14,12 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert 5 dummy users
-INSERT INTO users (first_name, last_name, email, password, gender, age, profile_img) VALUES
-('Alice', 'Johnson', 'alice@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'female', 25, NULL),
-('Bob', 'Smith', 'bob@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'male', 30, NULL),
-('Charlie', 'Brown', 'charlie@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'other', 22, NULL),
-('Diana', 'Miller', 'diana@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'female', 28, NULL),
-('Eve', 'Davis', 'eve@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'female', 26, NULL);
+INSERT INTO users (firstname, lastname, username, email, password, gender, age, profile_img) VALUES
+('Alice', 'Johnson', 'alice123', 'alice@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'female', 25, NULL),
+('Bob', 'Smith', 'bob123', 'bob@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'male', 30, NULL),
+('Charlie', 'Brown', 'charlie123', 'charlie@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'other', 22, NULL),
+('Diana', 'Miller', 'diana123','diana@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'female', 28, NULL),
+('Eve', 'Davis', 'eve123','eve@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'female', 26, NULL);
 
 CREATE TABLE IF NOT EXISTS blog (
     id INT AUTO_INCREMENT PRIMARY KEY,
