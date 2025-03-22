@@ -12,7 +12,7 @@ $page->preamble();
     <p>Welcome to my iBlog!</p>
 
     <?php if (!$session->isAuthenticated()) { ?>
-    <a href="<?php echo $page->data('pages'); ?>/signin.html" class="button">Log In</a>
+    <a href="<?php echo $page->data('pages'); ?>/signin.php" class="button">Log In</a>
     <?php } else { ?>
     <a href="<?php echo $page->data('pages'); ?>blog-write.html" class="button">Write Post</a>
     <?php } ?>
