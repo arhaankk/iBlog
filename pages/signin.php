@@ -1,9 +1,33 @@
 <?php
 require_once('../util/IB.php');
 $app = IB::app();
+$users = $app->getClass('IB\Users');
 $session = $app->getClass('IB\Session');
 if ($session->isAuthenticated())
 	$app->redirect('/');
+
+/* Handle login */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	if (empty($_POST['user']) || empty($_POST['pass'])) {
+		$app->error('The username and password are required');
+	}
+	$user = $_POST['user'];
+
+	$user = $users->get(['username' => $user]);
+	if (count($user) < 1) {
+		$app->error('This user was not found');
+	}
+	$user = $user[0];
+	$pass = $_POST['pass'];
+	if (password_verify($user['password'], $pass)) {
+		$app->error('The password was incorrect.');
+	}
+	/* If all is good, log them in! */
+	$session->setUser($user['id']);
+	$app->redirect('/');
+}
+
+/* Generate page */
 $page = $app->getClass('IB\Page');
 $page->setTitle('Sign in');
 $page->preamble();
@@ -18,7 +42,7 @@ $page->preamble();
 	<h1>Welcome to iBlog</h1>
 	<p>Please sign in with the form below.</p>
 	<div class="login">
-		<form action="login.php" method="POST" class="login__form">
+		<form action="signin.php" method="POST" class="login__form">
 			<div class="login__content">
 				<div class="login__box">
 					<i class="fas fa-envelope login__icon"></i>
@@ -31,7 +55,7 @@ $page->preamble();
 				<div class="login__box">
 					<i class="fas fa-lock login__icon"></i>
 					<div class="login__box-input">
-					 <input type="password" required class="login__input" id="login-pass" placeholder=" ">
+					 <input type="password" name="pass" required class="login__input" id="login-pass" placeholder=" ">
 					 <label for="login-pass" class="login__label">Password</label>
 				  </div>
 				</div>
