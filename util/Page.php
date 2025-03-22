@@ -107,7 +107,7 @@ class Page
 		/* Generate navbar */
 		$nav = <<<'nav'
 <nav>
-	<span class="header-brand"><a href="index.html">iBlog</a></span>
+	<span class="header-brand"><a href="{{PAGES}}/">iBlog</a></span>
 	<ul class="header-nav">
 nav;
 		if ($this->session->isAuthenticated()) {

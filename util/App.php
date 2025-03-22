@@ -71,6 +71,17 @@ class App
 		return $this->data['config'][$key];
 	}
 
+	/**
+	 * Redirect to a different page given a relative path.
+	 */
+	public function redirect(string $path, int $code=302) : void
+	{
+		$location = $this->getClass('IB\Page')->data('pages') . "$path";
+		http_response_code($code);
+		header("Location: $location");
+		exit();
+	}
+
 	public function hasClass(string $name) : bool
 	{
 		return isset($this->data['class'][$name]);
