@@ -1,38 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>iBlog</title>
-	<link rel="stylesheet" href="../styles/style.css">
-	<link rel="stylesheet" href="../styles/blogCard.css">
-	<meta name="description" content="The administrator page for iBlog">
-<body>
-<nav>
-	<span class="header-brand"><a href="index.html">iBlog</a></span>
-	<ul class="header-nav">
-		<li><a href="index.html">Home</a>
-		<li><a href="blogCard.html">My Blogs</a>
-		<li><a href="blog-write.html">Write</a>
-	</ul>
-	<div class="header-acct">
-		<div class="dropdown"><a href="profile.html">Profile</a>
-			<ul class="dropdown">
-				<li><a href="admin.html">Admin panel</a>
-				<li><a href="signin.html">Sign in</a>
-				<li><a href="signup.html">Sign up</a>
-				<li><a href="#">Log out</a>
-			</ul>
-		</div>
-	</div>
-</nav>
+<?php
+require_once('../util/IB.php');
+$app = IB::app();
+$session = $app->getClass('IB\Session');
+$page = $app->getClass('IB\Page');
+$page->setTitle('Home');
+$page->preamble();
+?>
 
 <main>
     <h1>iBlog</h1>
     <p>Welcome to my iBlog!</p>
-    <a href="signin.html" class="button">Log In</a>
-    <a href="blog-write.html" class="button">Write Post</a>
+
+    <?php if (!$session->isAuthenticated()) { ?>
+    <a href="<?php echo $page->data('pages'); ?>/signin.html" class="button">Log In</a>
+    <?php } else { ?>
+    <a href="<?php echo $page->data('pages'); ?>blog-write.html" class="button">Write Post</a>
+    <?php } ?>
     <hr>
+    <!-- TODO: Replace placeholder -->
     <h2>Recent activity</h2>
         <div class="card--mini">
             <img src="../images/profilePic.jpg" alt="User1 Profile Picture" class="post-avatar">
@@ -48,6 +33,4 @@
         </div>
 </main>
 
-<footer>
-	<small>&copy; iBlog 2025</small>
-</footer>
+<?php $page->epilogue(); ?>

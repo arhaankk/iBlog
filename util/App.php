@@ -64,6 +64,9 @@ class App
 		die();
 	}
 
+	/**
+	 * Get a config value.
+	 */
 	public function config(string $key) {
 		return $this->data['config'][$key];
 	}
