@@ -35,6 +35,18 @@ class Session
 	}
 
 	/**
+	 * Set the user who is logged in
+	 */
+	public function setUser(int $id) : bool {
+		$users = $this->users->get(['id' => $id]);
+		if (count($users) < 1)
+			return false;
+		$this->user = $users[0];
+		$_SESSION['user_id'] = $this->user['id'];
+		return true;
+	}
+
+	/**
 	 * Check if the user is authenticated
 	 */
 	public function isAuthenticated() : bool {
