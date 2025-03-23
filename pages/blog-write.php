@@ -1,15 +1,15 @@
 <?php
-// Start session (if needed for authentication)
-session_start();
+require_once('../util/IB.php');
+$app = IB::app();
+$users = $app->getClass('IB\Users');
+$db = $app->getClass('IB\Db');
+$session = $app->getClass('IB\Session');
+if (!$session->isAuthenticated())
+	$app->redirect('/signin.php');
 
-// Hardcoded user ID (todo replace this with dynamic user ID after implementing authentication)
-$userId = mt_rand(1, 5); //random 1-5
-
-// Database connection
-include 'databaseConnection.php';
-$pdo = databaseConnection(); // Use '127.0.0.1' if localhost fails
-
-// Handle form submission
+/* Handle form submission */
+$userId = $session->getUser()['id'];
+$pdo = $db->connect();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve form data
     $title = trim($_POST['title']);
@@ -107,3 +107,30 @@ HTML;
         die("Error creating blog post: " . $e->getMessage());
     }
 }
+
+/* Write page */
+$page = $app->getClass('IB\Page');
+$page->setTitle('Write');
+$page->setDescription('The writing page for iBlog.');
+$page->preamble();
+?>
+
+<main>
+    <h1>Write Your Blog Post</h1>
+    <p>Get typing!</p>
+    <form id="blogForm" class="card" action="<?php echo $page->data('pages'); ?>/blog-write.php" method="POST" enctype="multipart/form-data">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="content">Content:</label>
+        <textarea id="content" class="writer" name="content" rows="10" required></textarea>
+
+        <label for="image">Upload Image:</label>
+		<input type="file" id="image" name="images[]" accept="image/*" multiple>
+        <hr>
+        <button type="submit" class="button--active">Publish</button>
+    </form>
+</main>
+<script src="scripts/blog-write.js"></script>
+
+<?php $page->epilogue(); ?>
