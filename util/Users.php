@@ -51,6 +51,8 @@ class Users
 			$sql = $query['sql'];
 			$this->app->error($e->getMessage(), 'Profile picture fetch failed', "Query: $sql\n\n".$e->getTraceAsString());
 		}
+		if (empty($data))
+			return null;
 
 		/* Guess media type */
 		$mime = (new \finfo(FILEINFO_MIME_TYPE))->buffer($data);
