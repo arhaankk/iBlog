@@ -118,7 +118,7 @@ nav;
 		$nav .= <<<'nav'
 	</ul>
 	<div class="header-acct">
-		<div class="dropdown"><a href="profile.html">Profile</a>
+		<div class="dropdown"><a href="{{PAGES}}/profile.php">{{USERNAME}}</a>
 			<ul class="dropdown">
 nav;
 		if ($this->session->isAdmin()) {
