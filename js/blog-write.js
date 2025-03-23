@@ -5,7 +5,6 @@ document.getElementById('blogForm').addEventListener('submit', function(event) {
     var content = document.getElementById('content').value.trim();
     var image = document.getElementById('image').files[0];
 
-    // 验证字段是否为空
     if (title === '' || content === '') {
         alert('Please fill in all fields.');
         return;

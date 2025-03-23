@@ -6,16 +6,14 @@ function generatePostHtml($post, $pdo)
 {
     //$pdo = databaseConnection();
 
-    // Fetch basic info for all posts in one query
     $stmt = $pdo->prepare("
-        SELECT * FROM blog WHERE id IN (:postId)
+        SELECT id FROM blog WHERE id IN (:postId)
     ");
     $stmt->execute([':postId' => $post['id']]);
     $posts = $stmt->fetchColumn();
 
-    // If no posts are found, exit
     if (empty($posts)) {
-        die("No posts found.");
+        die("post not found.");
     }
 
     // Fetch images for the post

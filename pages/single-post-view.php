@@ -88,7 +88,7 @@ if (!isset($_GET['id'])) {
                     foreach ($images as $image) {
                         // Encode the binary image data into Base64
                         $imageData = base64_encode($image['imageData']);
-                        $imageSrc = 'data:image/jpeg;base64,' . $imageData; // Adjust MIME type as needed
+                        $imageSrc = 'data:image/jpeg;base64,' . $imageData;
 
                         // Render the image
                         echo "<img src='$imageSrc' alt='Blog Content Image' class='blog-content-img'>";

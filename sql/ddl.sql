@@ -1,5 +1,4 @@
-CREATE DATABASE IF NOT EXISTS app;
-USE app;
+
 
 CREATE TABLE if not exists users (
                        id INT AUTO_INCREMENT PRIMARY KEY,       -- Unique identifier for each user
