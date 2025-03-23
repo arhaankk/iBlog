@@ -1,4 +1,6 @@
 <?php
+require_once('../util/IB.php');
+$app = IB::app();
 require '../util/db_config.php';
 
 function sanitizeInput($data)
@@ -50,9 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $insert_query = "INSERT INTO users (firstname, lastname, username, password, email, age, gender, profile_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $insert_stmt = $connection->prepare($insert_query);
             $insert_stmt->bind_param("sssssisb", $firstname, $lastname, $username, $hashed_password, $email, $age, $gender, $profile_img);
+            mysqli_stmt_send_long_data($insert_stmt, 7, $profile_img);
 
             if ($insert_stmt->execute()) {
-                echo "An amount for the user " . htmlspecialchars($username) . "has been created<br>";
+                echo "An account for the user " . htmlspecialchars($username) . " has been created<br><a href=\"../pages/signin.php\">Click here to log in</a>";
             } else {
                 echo "Error: " . $insert_stmt->error;
             }
