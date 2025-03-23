@@ -4,7 +4,23 @@ panes.className = 'panes';
 const pane = [];
 const paneStates = [null, null, null];
 let users = {};
-let user = {};
+let target = null;
+
+const setUser = async (username, params) => {
+	if (!username in users) {
+		alert('Unable to find user '+username);
+		return;
+	}
+	user = users[username];
+	const resp = await fetch('../actions/users.php?id='+user['id'], {
+		method: 'POST',
+		body: JSON.stringify(params),
+	});
+	if (!resp.ok) {
+		alert('Failed to update user.');
+		return;
+	}
+}
 
 const linkSelect = async (p, name, event) => {
 	/* This isn't exactly ideal for now */
@@ -39,8 +55,8 @@ const linkSelect = async (p, name, event) => {
 				if (!name in users) {
 					return; /* Not a user */
 				}
-				user = users[name];
-				console.log(user);
+				/* Build next pane */
+				buildUserPane(2, users[name]);
 				return;
 			}
 			const resp = await fetch(url);
@@ -62,6 +78,28 @@ const linkSelect = async (p, name, event) => {
 			buildPane(1, 'Results', names);
 		}
 	case 2:
+		switch (paneStates[0]) {
+		case 'Users':
+			switch (name) {
+			case 'Enable User':
+				await setUser(target, {'disabled': 0});
+				break;
+			case 'Disable User':
+				await setUser(target, {'disabled': 1});
+				break;
+			}
+			/* Try to fetch specific user and rebuild */
+			if (users && target && target in users) {
+				const resp = await fetch('../actions/users.php?id='+users[target]['id']);
+				if (!resp.ok)
+					return;
+				const data = await resp.json();
+				if (data.length < 1)
+					return;
+				users[target] = data[0];
+				buildUserPane(2, users[target]);
+			}
+		}
 	}
 }
 
@@ -70,6 +108,8 @@ const buildPane = (i, title, links) => {
 	const paneTitle = document.createElement('h2');
 	paneTitle.innerText = title;
 	pane[i].appendChild(paneTitle);
+	if (links.length < 1)
+		return;
 	const paneLinks = document.createElement('ul');
 	for (let j = 0; j < links.length; j++) {
 		const item = document.createElement('li');
@@ -81,6 +121,41 @@ const buildPane = (i, title, links) => {
 		paneLinks.appendChild(item);
 	}
 	pane[i].appendChild(paneLinks);
+}
+
+const buildUserPane = (i, user) => {
+	/* Again, not that ideal */
+	target = user['username'];
+	pane[i].innerHTML = '';
+	const paneTitle = document.createElement('h2');
+	paneTitle.innerText = user['username'];
+	pane[i].appendChild(paneTitle);
+	const paneInfo = document.createElement('ul');
+	const info = {
+		'ID': user['id'],
+		'Username': user['username'],
+		'Email': user['email'],
+		'Display name': user['displayname'],
+		'Admin': user['admin'] === 1 ? 'Yes' : 'No',
+		'Disabled': user['disabled'] === 1 ? 'Yes' : 'No',
+	};
+	for (let key of Object.keys(info)) {
+		const val = info[key];
+		const item = document.createElement('li');
+		item.innerText = key+': '+val;
+		paneInfo.appendChild(item);
+	}
+
+	/* Disable / enable */
+	const item = document.createElement('li');
+	const link = document.createElement('a');
+	link.href='#';
+	link.innerText = user['disabled'] === 1 ? 'Enable User' : 'Disable User';
+	link.addEventListener('click', (e) => { linkSelect(i, link.innerText, e) });
+	item.appendChild(link);
+	paneInfo.appendChild(item);
+
+	pane[i].appendChild(paneInfo);
 }
 
 const selectPane = (i, selected) => {
