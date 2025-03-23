@@ -1,31 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Profile — iBlog</title>
-	<link rel="stylesheet" href="../styles/style.css">
-	<link rel="stylesheet" href="../styles/signin-signup.css">
-	<meta name="description" content="The profile page for iBlog">
-<body>
-<nav>
-	<span class="header-brand"><a href="index.html">iBlog</a></span>
-	<ul class="header-nav">
-		<li><a href="index.html">Home</a>
-		<li><a href="blogCard.html">My Blogs</a>
-		<li><a href="blog-write.html">Write</a>
-	</ul>
-	<div class="header-acct">
-		<div class="dropdown"><a href="profile.html">Profile</a>
-			<ul class="dropdown">
-				<li><a href="admin.html">Admin panel</a>
-				<li><a href="signin.html">Sign in</a>
-				<li><a href="signup.html">Sign up</a>
-				<li><a href="#">Log out</a>
-			</ul>
-		</div>
-	</div>
-</nav>
+<?php
+require_once('../util/IB.php');
+$app = IB::app();
+$session = $app->getClass('IB\Session');
+if (!$session->isAuthenticated())
+	$app->redirect('/signin.php');
+$user = $session->getUser();
+$page = $app->getClass('IB\Page');
+$page->setTitle('Profile');
+$page->setDescription('Manage your profile.');
+$page->preamble();
+?>
+<link rel="stylesheet" href="../styles/signin-signup.css">
 
 <main>
 	<h1>Your Profile</h1>
@@ -37,7 +22,7 @@
 						<div class="login__box" style="flex: 1;">
 							<i class="fas fa-user login__icon"></i>
 							<div class="login__box-input">
-								<input type="text" id="first-name" name="first-name" required class="login__input" placeholder=" " value="John" disabled>
+								<input type="text" id="first-name" name="first-name" required class="login__input" placeholder=" " value="<?php echo $user['firstname'] ?>" disabled>
 								<label for="first-name" class="login__label">First Name</label>
 							</div>
 						</div>
@@ -45,7 +30,7 @@
 						<div class="login__box" style="flex: 1;">
 							<i class="fas fa-user login__icon"></i>
 							<div class="login__box-input">
-								<input type="text" id="last-name" name="last-name" required class="login__input" placeholder=" " value="Doe" disabled>
+								<input type="text" id="last-name" name="last-name" required class="login__input" placeholder=" " value="<?php echo $user['lastname'] ?>" disabled>
 								<label for="last-name" class="login__label">Last Name</label>
 							</div>
 						</div>
@@ -54,7 +39,7 @@
 					<div class="login__box">
 						<i class="fas fa-envelope login__icon"></i>
 						<div class="login__box-input">
-							<input type="email" id="email" name="email" required class="login__input" placeholder=" " value="johndoe@example.com" disabled>
+							<input type="email" id="email" name="email" required class="login__input" placeholder=" " value="<?php echo $user['email'] ?>" disabled>
 							<label for="email" class="login__label">Email</label>
 						</div>
 					</div>
@@ -62,7 +47,7 @@
 					<div class="login__box">
 						<i class="fas fa-venus-mars login__icon"></i>
 						<div class="login__box-input">
-							<input type="text" id="gender" name="gender" required class="login__input" placeholder=" " value="Male" disabled>
+							<input style="text-transform: capitalize;" type="text" id="gender" name="gender" required class="login__input" placeholder=" " value="<?php echo $user['gender'] ?>" disabled>
 							<label for="gender" class="login__label">Gender</label>
 						</div>
 					</div>
@@ -70,7 +55,7 @@
 					<div class="login__box">
 						<i class="fas fa-birthday-cake login__icon"></i>
 						<div class="login__box-input">
-							<input type="number" id="age" name="age" required class="login__input" placeholder=" " value="25" disabled>
+							<input type="number" id="age" name="age" required class="login__input" placeholder=" " value="<?php echo $user['age'] ?>" disabled>
 							<label for="age" class="login__label">Age</label>
 						</div>
 					</div>
@@ -90,6 +75,4 @@
 	<script src="../scripts/profile.js"></script>
 </main>
 
-<footer>
-	<small>&copy; iBlog 2025</small>
-</footer>
+<?php $page->epilogue(); ?>
