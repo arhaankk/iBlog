@@ -73,7 +73,7 @@ $page->preamble();
 			<button type="submit" class="login__button">Login</button>
 
 			<p class="login__register">
-				Don't have an account? <a href="../pages/signup.html">Register</a>
+				Don't have an account? <a href="signup.php">Register</a>
 			</p>
 		</form>
 	</div>
