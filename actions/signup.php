@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows > 0) {
             echo "User already exists with this name and/or email. <br>";
-            echo "<a href='../signup.html'>Return to user entry</a>";
+            echo "<a href='../pages/signup.php'>Return to user entry</a>";
         } else {
             $profile_img = NULL;
             if (isset($_FILES["avatar"]) && $_FILES["avatar"]["size"] > 0) {

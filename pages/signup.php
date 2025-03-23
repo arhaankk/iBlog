@@ -100,7 +100,7 @@ $page->preamble();
 		<button type="submit" class="login__button">Submit</button>
 
 		<p class="login__register">
-			Already have an account? <a href="../pages/signin.html">Login</a>
+			Already have an account? <a href="signin.php">Login</a>
 		</p>
 	</form></div>
 </main>
