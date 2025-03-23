@@ -6,6 +6,7 @@
 
 $config['web']['hostname'] = 'localhost:8080';
 $config['web']['tls'] = false;
+$config['web']['path'] = '/';
 
 $config['db']['host'] = 'localhost';
 $config['db']['port'] = 3306;
