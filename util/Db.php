@@ -151,9 +151,10 @@ class Db
 	 * Execute a select query given a pile of parameters
 	 */
 	public function select(array | string $values,
-			array | string $from, array | string $where) : array
+			array | string $from, array | string $where,
+			string | null $order=null, int | null $limit=null) : array
 	{
-		$query = \IB\Db::buildSelect($values, $from, $where);
+		$query = \IB\Db::buildSelect($values, $from, $where, $order, $limit);
 		return $this->query($query['sql'], $query['params']);
 	}
 
@@ -161,7 +162,8 @@ class Db
 	 * Build a select query given a pile of parameters
 	 */
 	public static function buildSelect(array | string $values,
-			array | string $from, array | string $where) : array
+			array | string $from, array | string $where,
+			string | null $order=null, int | null $limit=null) : array
 	{
 		/* SELECT */
 		$sql = array('SELECT');
@@ -178,10 +180,11 @@ class Db
 			$sql[] = $from;
 		}
 		/* WHERE */
-		$sql[] = 'WHERE';
 		$params = array();
 		if (gettype($where) === 'array') {
 			$conditions = array();
+			if (count($where) > 0)
+				$sql[] = 'WHERE';
 			foreach ($where as $k => $v) {
 				if (is_int($k)) {
 					/* Add unnamed values directly */
@@ -196,6 +199,12 @@ class Db
 		} else {
 			$sql[] = $where;
 		}
+		/* ORDER */
+		if ($order)
+			$sql[] = "ORDER BY $order";
+		/* LIMIT */
+		if ($limit)
+			$sql[] = "LIMIT $limit";
 		return array('sql' => implode(' ', $sql), 'params' => $params);
 	}
 

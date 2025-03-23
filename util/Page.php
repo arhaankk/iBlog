@@ -22,8 +22,11 @@ class Page
 			'username' => 'Guest',
 		);
 		$this->session = $app->getClass('IB\Session');
-		if ($this->session->isAuthenticated())
+		if ($this->session->isAuthenticated()) {
 			$this->data['username'] = $this->session->getUser()['username'];
+			$this->data['user_id'] = $this->session->getUser()['id'];
+			$this->data['displayname'] = $this->session->getUser()['displayname'];
+		}
 	}
 
 	/**
@@ -114,7 +117,7 @@ nav;
 		$nav .= '<li><a href="{{PAGES}}/">Home</a>';
 		if ($this->session->isAuthenticated()) {
 
-			$nav .= '<li><a href="{{PAGES}}/blog-card.php">My Blogs</a>';
+			$nav .= '<li><a href="{{PAGES}}/posts.php?user={{USER_ID}}">My Posts</a>';
 			$nav .= '<li><a href="{{PAGES}}/blog-write.php">Write</a>';
 		}
 		$nav .= '<li><a href="{{PAGES}}/search/search.php">Search</a>';

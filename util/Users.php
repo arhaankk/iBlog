@@ -22,6 +22,15 @@ class Users
 	public function get(array $params)
 	{
 		$r = $this->db->select('*', 'users', $params);
+		foreach ($r as $k => $v) {
+			/* Evaluate display name */
+			if ($v['firstname'] && $v['lastname'])
+				$r[$k]['displayname'] = $v['firstname'].' '.$v['lastname'];
+			elseif ($v['firstname'])
+				$r[$k]['displayname'] = $v['firstname'];
+			else
+				$r[$k]['displayname'] = $r['username'];
+		}
 		return $r;
 	}
 
