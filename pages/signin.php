@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 	$user = $user[0];
 	$pass = $_POST['pass'];
-	if (password_verify($user['password'], $pass)) {
+	if (!password_verify($pass, $user['password'])) {
 		$app->error('The password was incorrect.');
 	}
 	/* If all is good, log them in! */
