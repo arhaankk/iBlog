@@ -209,6 +209,53 @@ class Db
 	}
 
 	/**
+	 * Execute a delete statement given a pile of parameters
+	 */
+	public function delete(string $from, array | string $where,
+			string | null $order=null, int | null $limit=null) : array
+	{
+		$query = \IB\Db::buildDelete($from, $where, $order, $limit);
+		return $this->query($query['sql'], $query['params']);
+	}
+
+	/**
+	 * Build a delete statement given a pile of parameters
+	 */
+	public static function buildDelete(string $from, array | string $where,
+			string | null $order=null, int | null $limit=null) : array
+	{
+		/* SELECT */
+		$sql = array('DELETE', 'FROM', $from);
+		/* WHERE */
+		$params = array();
+		if (gettype($where) === 'array') {
+			$conditions = array();
+			if (count($where) > 0)
+				$sql[] = 'WHERE';
+			foreach ($where as $k => $v) {
+				if (is_int($k)) {
+					/* Add unnamed values directly */
+					$conditions[] = $v;
+				} else {
+					/* Turn named values into parameters */
+					$conditions[] = "$k = ?";
+					$params[] = $v;
+				}
+			}
+			$sql[] = implode(', ', $conditions);
+		} else {
+			$sql[] = $where;
+		}
+		/* ORDER */
+		if ($order)
+			$sql[] = "ORDER BY $order";
+		/* LIMIT */
+		if ($limit)
+			$sql[] = "LIMIT $limit";
+		return array('sql' => implode(' ', $sql), 'params' => $params);
+	}
+
+	/**
 	 * Execute a insert query given a pile of parameters
 	 */
 	public function insert(string $target, array $values) : array

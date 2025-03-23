@@ -8,13 +8,15 @@ if (!$session->isAdmin())
 $page = $app->getClass('IB\Page');
 $page->setTitle('Administration');
 $page->setDescription('The administrator page for iBlog.');
+$page->addCrumb('Administration', '{{PAGES}}/admin.php');
 $page->preamble();
 ?>
 
 <main>
 	<h1>Administration</h1>
 	<p>Use this page to manage user accounts and site settings.
-	<div class="panes">
+	<p class="placeholder">Loading admin options…</p>
+	<!--<div class="panes">
 	<section class="pane">
 		<h2>Options</h2>
 		<ul>
@@ -47,7 +49,8 @@ $page->preamble();
 			</div>
 		</form>
 	</section>
-	</div>
+	</div>-->
 </main>
+<script src="../scripts/admin.js"></script>
 
 <?php $page->epilogue(); ?>

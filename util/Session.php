@@ -59,8 +59,7 @@ class Session
 	public function isAdmin() : bool {
 		if (!$this->isAuthenticated())
 			return false;
-		/* TODO: Make admin status configurable */
-		return $this->getUser()['username'] === 'alice';
+		return $this->getUser()['admin'] === 1;
 	}
 
 	/**

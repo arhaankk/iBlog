@@ -45,6 +45,10 @@ $page->preamble();
 		require_once('../util/blog-card.php');
 		echo generatePostHtml($post, null, true);
     ?>
+    <?php if ($session->isAdmin()) {
+        echo '<h2>Options</h2>';
+        echo '<a href="'.$page->data('actions').'/delete.php?post='.$post['id'].'" class="button">Delete Post</a>';
+    } ?>
 </main>
 
 <?php $page->epilogue(); ?>

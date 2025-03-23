@@ -17,11 +17,20 @@ class Posts
 	}
 
 	/**
-	 * Get an array of users given an array of parameters
+	 * Get an array of posts given an array of parameters
 	 */
 	public function get(array $params, string | null $order='created_at DESC', int | null $limit=null)
 	{
 		$r = $this->db->select('*', 'blog', $params, $order);
+		return $r;
+	}
+
+	/**
+	 * Delete a post given conditions
+	 */
+	public function delete(array $params, string | null $order='created_at DESC', int | null $limit=null)
+	{
+		$r = $this->db->delete('blog', $params, $order);
 		return $r;
 	}
 
