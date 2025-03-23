@@ -1,36 +1,59 @@
 <?php
 session_start();
-require '../database/db_config.php'; // Ensure database connection is included
+error_reporting(E_ALL);
+ini_set('display_errors', 1); 
+
+require '../database/db_config.php'; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST["email"]);
+    if (!isset($_POST["username"], $_POST["password"])) {
+        header("Location: ../pages/signin.html?error=Invalid request. Please try again");
+        exit;
+    }
+    
+    $username = trim($_POST["username"]);
     $password = trim($_POST["password"]);
 
-    if (empty($email) || empty($password)) {
-        die("Please fill out both fields.");
+    if (empty($username) || empty($password)) {
+        header("Location: ../pages/signin.html?error=Please fill out both fields");
+        exit;
     }
 
-    $stmt = $conn->prepare("SELECT id, first_name, last_name, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
+    // Check if the username exists
+    $query = "SELECT * FROM users WHERE username = ?";
+    $stmt = $connection->prepare($query);
     
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $first_name, $last_name, $hashed_password);
-        $stmt->fetch();
-        
-        if (password_verify($password, $hashed_password)) {
-            $_SESSION["user_id"] = $id;
-            $_SESSION["user_name"] = $first_name . " " . $last_name;
-            header("Location: ../pages/index.html");
-            exit();
-        } else {
-            die("Invalid password.");
-        }
-    } else {
-        die("No account found with that email.");
+    if ($stmt === false) {
+        header("Location: ../pages/signin.html?error=Error preparing the query");
+        exit;
     }
-    
+
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows == 0) {
+        // User does not exist
+        header("Location: ../pages/signin.html?error=User not found. Feel free to register");
+        exit;
+    } else {
+        $user = $result->fetch_assoc();
+
+        if (!password_verify($password, $user['password'])) {
+            // Incorrect password
+            header("Location: ../pages/signin.html?error=Password is incorrect");
+            exit;
+        } else {
+            // Successful login
+            $_SESSION['username'] = $username;
+            header("Location: ../pages/index.html"); 
+            exit;
+        }
+    }
+
     $stmt->close();
+} else {
+    header("Location: ../pages/signin.html?error=Invalid request method");
+    exit;
 }
 ?>

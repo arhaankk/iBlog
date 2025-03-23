@@ -1,12 +1,12 @@
 <?php
 $host = "localhost";
 $user = "root"; 
-$pass = "password"; 
+$password = ""; 
 $dbname = "iblog"; 
 
-$conn = new mysqli($host, $user, $pass, $dbname);
+$connection = new mysqli($host, $user, $password, $dbname);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
 }
 ?>

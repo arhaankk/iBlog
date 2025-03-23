@@ -1,72 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Log in — iBlog</title>
-	<link rel="stylesheet" href="../styles/style.css">
-	<link rel="stylesheet" href="../styles/signin-signup.css">
-	<meta name="description" content="The sign in page for iBlog">
-<body>
-<nav>
-	<span class="header-brand"><a href="index.html">iBlog</a></span>
-	<ul class="header-nav">
-		<li><a href="index.html">Home</a>
-		<li><a href="blogCard.html">My Blogs</a>
-		<li><a href="blog-write.html">Write</a>
-	</ul>
-	<div class="header-acct">
-		<div class="dropdown"><a href="profile.html">Profile</a>
-			<ul class="dropdown">
-				<li><a href="admin.html">Admin panel</a>
-				<li><a href="signin.html">Sign in</a>
-				<li><a href="signup.html">Sign up</a>
-				<li><a href="#">Log out</a>
-			</ul>
-		</div>
-	</div>
-</nav>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Log in — iBlog</title>
+    <link rel="stylesheet" href="../styles/style.css" />
+    <link rel="stylesheet" href="../styles/signin-signup.css" />
+    <meta name="description" content="The sign in page for iBlog" />
+  </head>
+  <body>
+    <nav>
+      <span class="header-brand"><a href="index.html">iBlog</a></span>
+      <ul class="header-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blogCard.html">My Blogs</a></li>
+        <li><a href="blog-write.html">Write</a></li>
+      </ul>
+      <div class="header-acct">
+        <div class="dropdown">
+          <a href="profile.html">Profile</a>
+          <ul class="dropdown">
+            <li><a href="admin.html">Admin panel</a></li>
+            <li><a href="signin.html">Sign in</a></li>
+            <li><a href="signup.html">Sign up</a></li>
+            <li><a href="#">Log out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-<main>
-	<h1>Welcome to iBlog</h1>
-	<h4>Sign in</h4>
-	<div class="login">
-		<form action="../routes/signin.php" method="POST" class="login__form">
-			<div class="login__content">
-				<div class="login__box">
-					<i class="fas fa-envelope login__icon"></i>
-					<div class="login__box-input">
-						<input type="text" id="user" name="user" required class="login__input" placeholder=" ">
-						<label for="user" class="login__label">Username</label>
-					</div>
-				</div>
+    <main>
+      <h1>Welcome to iBlog</h1>
+      <h4>Sign in</h4>
 
-				<div class="login__box">
-					<i class="fas fa-lock login__icon"></i>
-					<div class="login__box-input">
-					 <input type="password" required class="login__input" id="login-pass" placeholder=" ">
-					 <label for="login-pass" class="login__label">Password</label>
-				  </div>
-				</div>
-			</div>
+      <!-- Display error message dynamically -->
+      <p id="error-message" style="color: red; display: none; text-align: center; width: 100%; margin: 10px auto;"></p>
 
-			<div class="login__check">
-				<div class="login__check-group">
-					<input type="checkbox" id="remember" class="login__check-input">
-					<label for="remember" class="login__check-label">Remember me</label>
-				</div>
-				<a href="#" class="login__forgot">Forgot Password?</a>
-			</div>
+      <div class="login">
+        <form action="../routes/signin.php" method="POST" class="login__form">
+          <div class="login__content">
+            <div class="login__box">
+              <i class="fas fa-envelope login__icon"></i>
+              <div class="login__box-input">
+                <input
+                  type="text"
+                  id="user"
+                  name="username"
+                  required
+                  class="login__input"
+                  placeholder=" "
+                />
+                <label for="user" class="login__label">Username</label>
+              </div>
+            </div>
 
-			<button type="submit" class="login__button">Login</button>
+            <div class="login__box">
+              <i class="fas fa-lock login__icon"></i>
+              <div class="login__box-input">
+                <input
+                  type="password"
+                  required
+                  class="login__input"
+                  id="login-pass"
+                  name="password"
+                  placeholder=" "
+                />
+                <label for="login-pass" class="login__label">Password</label>
+              </div>
+            </div>
+          </div>
 
-			<p class="login__register">
-				Don't have an account? <a href="../pages/signup.html">Register</a>
-			</p>
-		</form>
-	</div>
-</main>
+          <div class="login__check">
+            <div class="login__check-group">
+              <input type="checkbox" id="remember" class="login__check-input" />
+              <label for="remember" class="login__check-label">Remember me</label>
+            </div>
+            <a href="#" class="login__forgot">Forgot Password?</a>
+          </div>
 
-<footer>
-	<small>&copy; iBlog 2025</small>
-</footer>
+          <button type="submit" class="login__button">Login</button>
+
+          <p class="login__register">
+            Don't have an account? <a href="../pages/signup.html">Register</a>
+          </p>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <small>&copy; iBlog 2025</small>
+    </footer>
+
+    
+    <script>
+      // Function to get query parameters from URL
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+    
+      // Get the error message from the URL
+      const errorMessage = getQueryParam("error");
+    
+      if (errorMessage) {
+        const errorElement = document.getElementById("error-message");
+        errorElement.textContent = errorMessage;
+        errorElement.style.display = "inline-block"; // Ensures the element is visible
+        errorElement.style.color = "red"; // Red text color for error
+        errorElement.style.textAlign = "center"; // Centers the text
+        errorElement.style.width = "100%"; // Makes the element take the full width
+        errorElement.style.margin = "10px auto"; // Centers the element
+      }
+    </script>
+    
+  </body>
+</html>
