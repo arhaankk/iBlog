@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (avatar.files.length < 1)
 			return true;
 		const data = await avatar.files[0].arrayBuffer();
-		console.log(data);
 		const resp = await fetch('../actions/set-avatar.php', {
 			method: "POST",
 			body: data
@@ -20,6 +19,29 @@ document.addEventListener("DOMContentLoaded", function () {
 			return true;
 		} else {
 			alert('Failed to upload profile image.');
+			return false;
+		}
+	}
+
+	let updateProfile = async () => {
+		const f = form.elements;
+		let profile = {
+			firstname: f['first-name'].value,
+			lastname: f['last-name'].value,
+			email: f['email'].value,
+			gender: f['gender'].value,
+			age: parseInt(f['age'].value),
+		};
+		const resp = await fetch('../actions/set-profile.php', {
+			method: "POST",
+			body: JSON.stringify(profile),
+		});
+		if (resp.ok) {
+			avatar.value = null;
+			alert('Profile updated successfully.');
+			return true;
+		} else {
+			alert('Failed to update profile.');
 			return false;
 		}
 	}
@@ -65,6 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (!validateForm())
 			return;
 		if (!await uploadImage())
+			return;
+		if (!await updateProfile())
 			return;
 		inputs.forEach(input => input.setAttribute("disabled", true));
 		saveButton.style.display = "none";

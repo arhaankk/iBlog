@@ -75,6 +75,15 @@ class Users
 		}
 	}
 
+	/**
+	 * Set user information from an ID and data.
+	 * This function is internal and does not validate the provided data.
+	 */
+	public function setUser(int $id, array $data): void
+	{
+		$this->db->update($data, 'users', ['id' => $id]);
+	}
+
 	public static function getInstance(&$app)
 	{
 		if ($app->hasClass(static::class))

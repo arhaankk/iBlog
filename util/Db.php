@@ -90,6 +90,64 @@ class Db
 	}
 
 	/**
+	 * Execute an update query given a pile of parameters
+	 */
+	public function update(array | string $set,
+			string $update, array | string $where) : array
+	{
+		$query = \IB\Db::buildUpdate($set, $update, $where);
+		return $this->query($query['sql'], $query['params']);
+	}
+
+	/**
+	 * Build a select query given a pile of parameters
+	 */
+	public static function buildUpdate(array | string $set,
+			string $update, array | string $where) : array
+	{
+		/* UPDATE */
+		$sql = array('UPDATE', $update);
+		/* SET */
+		$sql[] = 'SET';
+		$params = array();
+		if (gettype($set) === 'array') {
+			$conditions = array();
+			foreach ($set as $k => $v) {
+				if (is_int($k)) {
+					/* Add unnamed values directly */
+					$conditions[] = $v;
+				} else {
+					/* Turn named values into parameters */
+					$conditions[] = "$k = ?";
+					$params[] = $v;
+				}
+			}
+			$sql[] = implode(', ', $conditions);
+		} else {
+			$sql[] = $set;
+		}
+		/* WHERE */
+		$sql[] = 'WHERE';
+		if (gettype($where) === 'array') {
+			$conditions = array();
+			foreach ($where as $k => $v) {
+				if (is_int($k)) {
+					/* Add unnamed values directly */
+					$conditions[] = $v;
+				} else {
+					/* Turn named values into parameters */
+					$conditions[] = "$k = ?";
+					$params[] = $v;
+				}
+			}
+			$sql[] = implode(', ', $conditions);
+		} else {
+			$sql[] = $where;
+		}
+		return array('sql' => implode(' ', $sql), 'params' => $params);
+	}
+
+	/**
 	 * Execute a select query given a pile of parameters
 	 */
 	public function select(array | string $values,
