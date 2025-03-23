@@ -7,6 +7,7 @@ function generatePostHtml($post, $pdo, $full=true)
 	$app = IB::app();
 	$db = $app->getClass('IB\Db');
 	$users = $app->getClass('IB\Users');
+	$session = $app->getClass('IB\Session');
 	$pdo = $db->connect();
 	$page = $app->getClass('IB\Page');
 	//$pdo = databaseConnection();
@@ -36,7 +37,7 @@ function generatePostHtml($post, $pdo, $full=true)
 	// Start generating HTML
 	$html = '<section class="card--medium">';
 	$html .= '<div class="blog-content">';
-	$html .= '<img src="../../actions/avatar.php?user='.$post['userId'].'" alt="'.$author['displayname'].'\'s Profile Picture" class="post-avatar">';
+	$html .= '<img src="'.$page->data('actions').'/avatar.php?user='.$post['userId'].'" alt="'.$author['displayname'].'\'s Profile Picture" class="post-avatar">';
 	$html .= '<strong class="post-user-name"><a href="'.$page->data('pages').'/posts.php?user='.$author['id'].'">' . htmlspecialchars($author['displayname']) . '</a></strong>';
 	$html .= '<h2>' . htmlspecialchars($post['title']) . '</h2>';
 	$html .= '<div class="blog-content-text">';
@@ -69,8 +70,9 @@ function generatePostHtml($post, $pdo, $full=true)
 		$html .= '<div class="comments"><h3>Comments</h3>';
 		$html .= '<p class="placeholder">Loading comments…</p>';
 		$postId = $post['id'];
+		$formStyle = !$session->isAuthenticated() ? ' style="display: none;"' : '';
 		$html .= <<<form
-<div class="comment-form">
+<div class="comment-form"$formStyle>
 	<form id="commentForm" class="form--inline" data-post="$postId">
 		<label for="commentInput"></label><input type="text" id="commentInput" placeholder="Add a comment...">
 		<button type="button">Submit</button>
