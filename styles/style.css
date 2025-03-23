@@ -153,6 +153,7 @@ nav > *:last-child {
 	list-style: none;
 	display: flex;
 	gap: 1rem;
+	flex: 2;
 }
 .header-nav > li + li::before {
 	content: '—';

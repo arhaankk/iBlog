@@ -1,9 +1,14 @@
 <?php
-include "databaseConnection.php";
+require_once('../../util/IB.php');
+$app = IB::app();
+$db = $app->getClass('IB\Db');
+$page = $app->getClass('IB\Page');
+$pdo = $db->connect();
 
 // Function to generate HTML for a single post
-function generatePostHtml($post, $pdo)
+function generatePostHtml($post, $pdo, $full=true)
 {
+    global $page;
     //$pdo = databaseConnection();
 
     // Fetch basic info for all posts in one query
@@ -35,7 +40,7 @@ function generatePostHtml($post, $pdo)
     // Start generating HTML
     $html = '<section class="card--medium">';
     $html .= '<div class="blog-content">';
-    $html .= '<img src="../images/profilePic.jpg" alt="User Profile Picture" class="post-avatar">';
+    $html .= '<img src="../../actions/avatar.php?user='.$post['userId'].'" alt="User Profile Picture" class="post-avatar">';
     $html .= '<strong class="post-user-name">' . htmlspecialchars($authorUserName) . ': </strong>';
     $html .= '<h2>' . htmlspecialchars($post['title']) . '</h2>';
     $html .= '<div class="blog-content-text">';
@@ -43,18 +48,23 @@ function generatePostHtml($post, $pdo)
     $html .= '</div>';
 
     // Add images section
-    $html .= '<div class="blog-content-image">';
-    if (!empty($images)) {
-        $html .= '<h3>Images:</h3>';
-        foreach ($images as $image) {
-            $imageData = base64_encode($image['imageData']);
-            $imageSrc = 'data:image/jpeg;base64,' . $imageData;
-            $html .= '<img src="' . $imageSrc . '" alt="Blog Content Image" class="blog-content-img">';
+    if ($full) {
+        $html .= '<div class="blog-content-image">';
+        if (!empty($images)) {
+            $html .= '<h3>Images:</h3>';
+            foreach ($images as $image) {
+                $imageData = base64_encode($image['imageData']);
+                $imageSrc = 'data:image/jpeg;base64,' . $imageData;
+                $html .= '<img src="' . $imageSrc . '" alt="Blog Content Image" class="blog-content-img">';
+            }
+        } else {
+            $html .= '<p>No images available for this blog post.</p>';
         }
+        $html .= '</div>';
     } else {
-        $html .= '<p>No images available for this blog post.</p>';
+        $html .= '<div><a href="'.$page->data('pages').'/single-post-view.php?id='.$post['id'].'" class="button">Full Post</a></div>';
+
     }
-    $html .= '</div>';
     $html .= '</div>';
     $html .= '</section>';
 
