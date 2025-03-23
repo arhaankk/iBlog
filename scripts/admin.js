@@ -1,115 +1,115 @@
 let placeholder = null;
-const panes = document.createElement('panes');
-const pane = []; = document.createElement('panes');
-const pane2 = document.createElement('panes');
-const pane3 = document.createElement('panes');
+const panes = document.createElement('div');
+panes.className = 'panes';
+const pane = [];
+const paneStates = [null, null, null];
+let users = {};
+let user = {};
 
-const startPanel = async () => {
+const linkSelect = async (p, name, event) => {
+	/* This isn't exactly ideal for now */
+	paneStates[p] = name;
+	switch (p) {
+	case 0:
+		pane[1].innerHTML = '';
+		pane[2].innerHTML = '';
+		switch (name) {
+		case 'General':
+			pane[1].innerHTML = 'Work in progress.';
+			break;
+		case 'Users':
+			buildPane(1, 'Find User', ['By Username', 'By Email']);
+			break;
+		}
+		selectPane(p, name);
+		break;
+	case 1:
+		pane[2].innerHTML = '';
+		switch (paneStates[0]) {
+		case 'Users':
+			url = '../actions/users.php';
+			switch (name) {
+			case 'By Username':
+				url += '?username='+encodeURIComponent(prompt('Enter the username:'));
+				break;
+			case 'By Email':
+				url += '?email='+encodeURIComponent(prompt('Enter the email:'));
+				break;
+			default:
+				if (!name in users) {
+					return; /* Not a user */
+				}
+				user = users[name];
+				console.log(user);
+				return;
+			}
+			const resp = await fetch(url);
+			if (!resp.ok) {
+				alert('Failed to perform search. Please try a different query.');
+				return;
+			}
+			results = await resp.json();
+			if (results.length < 1) {
+				alert('No results found for this search.');
+				return;
+			}
+			users = {};
+			const names = [];
+			for (let i = 0; i < results.length; i++) {
+				names[i] = results[i]['username'];
+				users[results[i]['username']] = results[i];
+			}
+			buildPane(1, 'Results', names);
+		}
+	case 2:
+	}
+}
+
+const buildPane = (i, title, links) => {
+	pane[i].innerHTML = '';
+	const paneTitle = document.createElement('h2');
+	paneTitle.innerText = title;
+	pane[i].appendChild(paneTitle);
+	const paneLinks = document.createElement('ul');
+	for (let j = 0; j < links.length; j++) {
+		const item = document.createElement('li');
+		const link = document.createElement('a');
+		link.href='#';
+		link.innerText = links[j];
+		link.addEventListener('click', (e) => { linkSelect(i, links[j], e) });
+		item.appendChild(link);
+		paneLinks.appendChild(item);
+	}
+	pane[i].appendChild(paneLinks);
+}
+
+const selectPane = (i, selected) => {
+	paneStates[i] = selected;
+	const options = pane[i].querySelectorAll('li > a');
+	for (let j = 0; j < options.length; j++) {
+		if (options[j].innerText === selected)
+			options[j].parentNode.classList.add('active');
+		else
+			options[j].parentNode.classList.remove('active');
+	}
+}
+
+const startPanel = () => {
+
 	for (let i = 0; i < 3; i++) {
 		pane[i] = document.createElement('section');
 		pane[i].className = 'pane';
-		pane.appendChild(pane[i]);
+		panes.appendChild(pane[i]);
 	}
+	buildPane(0, 'Options', ['General', 'Users']);
+	selectPane(0, 'General');
+	linkSelect(0, 'General', null);
 	/* Hide placeholder */
 	placeholder = document.querySelector('.placeholder');
 	placeholder.style['display'] = 'none';
+	placeholder.after(panes);
 }
 
-
-document.addEventListener("DOMContentLoaded", function () {
-	const editButton = document.getElementById("edit-button");
-	const saveButton = document.getElementById("save-button");
-	const inputs = document.querySelectorAll(".login__input");
-	const form = document.querySelector('form');
-
-	let uploadImage = async () => {
-		const avatar = document.querySelector('#avatar');
-		if (avatar.files.length < 1)
-			return true;
-		const data = await avatar.files[0].arrayBuffer();
-		const resp = await fetch('../actions/set-avatar.php', {
-			method: "POST",
-			body: data
-		});
-		if (resp.ok) {
-			avatar.value = null;
-			alert('Profile image updated successfully.');
-			return true;
-		} else {
-			alert('Failed to upload profile image.');
-			return false;
-		}
-	}
-
-	let updateProfile = async () => {
-		const f = form.elements;
-		let profile = {
-			firstname: f['first-name'].value,
-			lastname: f['last-name'].value,
-			email: f['email'].value,
-			gender: f['gender'].value,
-			age: parseInt(f['age'].value),
-		};
-		const resp = await fetch('../actions/set-profile.php', {
-			method: "POST",
-			body: JSON.stringify(profile),
-		});
-		if (resp.ok) {
-			avatar.value = null;
-			alert('Profile updated successfully.');
-			return true;
-		} else {
-			alert('Failed to update profile.');
-			return false;
-		}
-	}
-
-	let validateForm = () => {
-		let valid = true;
-		let err = '';
-		/* Dirty reimplementation of HTML checks */
-		for (i of inputs) {
-			if (i.value.length === 0 && i.hasAttribute('required')) {
-				i.classList.add('aria-invalid');
-				valid = false;
-				err = `The ${i.name} is required.`;
-			} else if (i.type === 'number' && parseInt(i.value,10).toString() !== i.value) {
-				i.classList.add('aria-invalid');
-				valid = false;
-				err = `The ${i.name} must be a number.`;
-			} else if (i.type === 'email' && i.value.indexOf('@') < 0) {
-				i.classList.add('aria-invalid');
-				valid = false;
-				err = `The ${i.name} must be a valid email.`;
-			} else {
-				i.classList.remove('aria-invalid');
-			}
-		}
-		const f = form.elements;
-		if (parseInt(f['age'].value) < 18 || parseInt(f['age'].value) > 150) {
-			err = 'Invalid age.'
-			valid = false;
-		}
-		if (!valid)
-			alert(err);
-		return valid;
-	}
-
-	editButton.addEventListener("click", function () {
-		inputs.forEach(input => input.removeAttribute("disabled"));
-		saveButton.style.display = "block";
-		editButton.style.display = "none";
-	});
-
-	saveButton.addEventListener("click", async function () {
-		if (!validateForm())
-			return;
-		if (!await uploadImage())
-			return;
-		if (!await updateProfile())
-			return;
-		inputs.forEach(input => input.setAttribute("disabled", true));
-		saveButton.style.display = "none";
-		editButton.style.display = "block";
-	});
+document.addEventListener("DOMContentLoaded", () => {
+	startPanel();
 });
