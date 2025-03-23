@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 			'username' => $v['username'],
 			'displayname' => $v['displayname'],
 			'email' => $v['email'],
+			'admin' => $v['admin'],
 			'disabled' => $v['disabled'],
 		);
 	}
