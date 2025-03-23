@@ -208,6 +208,36 @@ class Db
 		return array('sql' => implode(' ', $sql), 'params' => $params);
 	}
 
+	/**
+	 * Execute a insert query given a pile of parameters
+	 */
+	public function insert(string $target, array $values) : array
+	{
+		$query = \IB\Db::buildInsert($target, $values);
+		return $this->query($query['sql'], $query['params']);
+	}
+
+	/**
+	 * Build an insert query given a pile of parameters
+	 */
+	public static function buildInsert(string $target, array $values) : array
+	{
+
+		/* INSERT INTO */
+		$sql = array('INSERT', 'INTO');
+		$sql[] = $target.'('.implode(', ', array_keys($values)).')';
+		/* VALUES */
+		$sql[] = 'VALUES';
+		$qs = array();
+		$params = array();
+		foreach ($values as $k => $v) {
+			$qs[] = '?';
+			$params[] = $v;
+		}
+		$sql[] = '('.implode(', ', $qs).')';
+		return array('sql' => implode(' ', $sql), 'params' => $params);
+	}
+
 	public static function getInstance(&$app)
 	{
 		if ($app->hasClass(static::class))
