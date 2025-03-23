@@ -111,11 +111,13 @@ class Page
 	<span class="header-brand"><a href="{{PAGES}}/">iBlog</a></span>
 	<ul class="header-nav">
 nav;
+		$nav .= '<li><a href="{{PAGES}}/">Home</a>';
 		if ($this->session->isAuthenticated()) {
-			$nav .= '<li><a href="{{PAGES}}/">Home</a>';
+
 			$nav .= '<li><a href="{{PAGES}}/blog-card.php">My Blogs</a>';
 			$nav .= '<li><a href="{{PAGES}}/blog-write.php">Write</a>';
 		}
+		$nav .= '<li><a href="{{PAGES}}/search/search.php">Search</a>';
 		$nav .= <<<'nav'
 	</ul>
 	<div class="header-acct">
