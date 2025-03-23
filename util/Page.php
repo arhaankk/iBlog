@@ -125,9 +125,9 @@ nav;
 			$nav .= '<li><a href="{{PAGES}}/admin.php">Admin panel</a>';
 		}
 		if ($this->session->isAuthenticated()) {
-			$nav .= '<li><a href="{{PAGES}}/signup.php">Sign up</a>';
 			$nav .= '<li><a href="{{PAGES}}/logout.php">Log out</a>';
 		} else {
+			$nav .= '<li><a href="{{PAGES}}/signup.php">Sign up</a>';
 			$nav .= '<li><a href="{{PAGES}}/signin.php">Sign in</a>';
 		}
 		$nav .= <<<'nav'

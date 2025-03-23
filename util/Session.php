@@ -63,6 +63,14 @@ class Session
 		return $this->getUser()['username'] === 'alice';
 	}
 
+	/**
+	 * Reset the session
+	 */
+	public function destroy() : void {
+		unset($_SESSION['user_id']);
+		$this->user = null;
+	}
+
 	public static function getInstance(&$app)
 	{
 		if ($app->hasClass(static::class))
