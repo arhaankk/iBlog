@@ -152,9 +152,9 @@ class Db
 	 */
 	public function select(array | string $values,
 			array | string $from, array | string $where,
-			string | null $order=null, int | null $limit=null) : array
+			string | null $order=null, int | null $limit=null, bool $search=false) : array
 	{
-		$query = \IB\Db::buildSelect($values, $from, $where, $order, $limit);
+		$query = \IB\Db::buildSelect($values, $from, $where, $order, $limit, $search);
 		return $this->query($query['sql'], $query['params']);
 	}
 
@@ -163,7 +163,7 @@ class Db
 	 */
 	public static function buildSelect(array | string $values,
 			array | string $from, array | string $where,
-			string | null $order=null, int | null $limit=null) : array
+			string | null $order=null, int | null $limit=null, bool $search=false) : array
 	{
 		/* SELECT */
 		$sql = array('SELECT');
@@ -191,7 +191,10 @@ class Db
 					$conditions[] = $v;
 				} else {
 					/* Turn named values into parameters */
-					$conditions[] = "$k = ?";
+					if ($search)
+						$conditions[] = "$k LIKE ?";
+					else
+						$conditions[] = "$k = ?";
 					$params[] = $v;
 				}
 			}

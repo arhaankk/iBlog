@@ -19,9 +19,9 @@ class Users
 	/**
 	 * Get an array of users given an array of parameters
 	 */
-	public function get(array $params)
+	public function get(array $params, string | null $order='created_at DESC', int | null $limit=null, bool $search=false)
 	{
-		$r = $this->db->select('*', 'users', $params);
+		$r = $this->db->select('*', 'users', $params, $order, $limit, $search);
 		foreach ($r as $k => $v) {
 			/* Evaluate display name */
 			if ($v['firstname'] && $v['lastname'])
