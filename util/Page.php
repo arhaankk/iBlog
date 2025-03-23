@@ -36,7 +36,7 @@ class Page
 	 */
 	public function getRoot() : string
 	{
-		return ($this->web['tls'] ? 'https://' : 'http://') . $this->web['hostname'];
+		return ($this->web['tls'] ? 'https://' : 'http://') . $this->web['hostname'] . $this->web['path'];
 	}
 
 	/**
