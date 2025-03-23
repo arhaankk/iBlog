@@ -1,56 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Sign up — iBlog</title>
-	<link rel="stylesheet" href="../styles/style.css">
-	<link rel="stylesheet" href="../styles/signin-signup.css">
-	<meta name="description" content="The sign up page for iBlog">
-<body>
-<nav>
-	<span class="header-brand"><a href="index.html">iBlog</a></span>
-	<ul class="header-nav">
-		<li><a href="index.html">Home</a>
-		<li><a href="blogCard.html">My Blogs</a>
-		<li><a href="blog-write.html">Write</a>
-	</ul>
-	<div class="header-acct">
-		<div class="dropdown"><a href="profile.html">Profile</a>
-			<ul class="dropdown">
-				<li><a href="admin.html">Admin panel</a>
-				<li><a href="signin.html">Sign in</a>
-				<li><a href="signup.html">Sign up</a>
-				<li><a href="#">Log out</a>
-			</ul>
-		</div>
-	</div>
-</nav>
+<?php
+require_once('../util/IB.php');
+$app = IB::app();
+$users = $app->getClass('IB\Users');
+$session = $app->getClass('IB\Session');
+if ($session->isAuthenticated())
+	$app->redirect('/');
+$page = $app->getClass('IB\Page');
+$page->setTitle('Sign up');
+$page->preamble();
+?>
+<link rel="stylesheet" href="../styles/signin-signup.css">
 
 <main>
 	<h1>Welcome to iBlog</h1>
 	<p>Please register with the form below.</p>
 	<div class="login">
-		<form action="register.php" method="POST" class="login__form">
+		<form action="../actions/signup.php" method="POST" class="login__form" enctype="multipart/form-data">
 			<div class="login__content">
 				<div style="display: flex; gap: 10px;">
 					<div class="login__box" style="flex: 1;">
 						<i class="fas fa-user login__icon"></i>
 						<div class="login__box-input">
-							<input type="text" id="first-name" name="first-name" required class="login__input" placeholder=" ">
-							<label for="first-name" class="login__label">First Name</label>
+							<input type="text" id="firstname" name="firstname" required class="login__input" placeholder=" ">
+							<label for="firstname" class="login__label">First Name</label>
 						</div>
 					</div>
 
 					<div class="login__box" style="flex: 1;">
 						<i class="fas fa-user login__icon"></i>
 						<div class="login__box-input">
-							<input type="text" id="last-name" name="last-name" required class="login__input" placeholder=" ">
-							<label for="last-name" class="login__label">Last Name</label>
+							<input type="text" id="lastname" name="lastname" required class="login__input" placeholder=" ">
+							<label for="lastname" class="login__label">Last Name</label>
 						</div>
 					</div>
 				</div>
-
+				<div class="login__box">
+					<i class="fas fa-envelope login__icon"></i>
+					<div class="login__box-input">
+						<input type="username" id="username" name="username" required class="login__input" placeholder=" ">
+						<label for="username" class="login__label">Username</label>
+					</div>
+				</div>
 				<div class="login__box">
 					<i class="fas fa-envelope login__icon"></i>
 					<div class="login__box-input">
@@ -138,6 +128,4 @@ document.querySelector('.login > form').addEventListener('submit', (e) => {
 });
 </script>
 
-<footer>
-	<small>&copy; iBlog 2025</small>
-</footer>
+<?php $page->epilogue(); ?>
