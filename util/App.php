@@ -42,8 +42,9 @@ class App
 	/**
 	 * Display a formatted error message.
 	 */
-	public function error(string $message, string $title=null, string $extra=null) : void
+	public function error(string $message, string $title=null, string $extra=null, int $code=500) : void
 	{
+		http_response_code($code);
 		/* Output */
 		$out = '';
 		if (!empty($title)) {
@@ -62,6 +63,17 @@ class App
 		echo '<style>.error pre { border: 2px solid #c22; border-radius: 1rem; padding: 1rem;}</style>';
 		echo "<div class=\"error\">$out</div>";
 		die();
+	}
+
+	/**
+	 * Display a simple error message.
+	 * Useful for returning errors to non-browsers.
+	 */
+	public function error_plain(string $message, int $code=500) : void
+	{
+		http_response_code($code);
+		header('Content-Type: text/plain');
+		die($message);
 	}
 
 	/**
