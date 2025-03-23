@@ -16,17 +16,17 @@ CREATE TABLE if not exists users (
 );
 
 -- Insert 5 dummy users
-INSERT INTO users (firstname, lastname, username, email, password, gender, age) VALUES
+INSERT INTO users (firstname, lastname, username, password, email, gender, age) VALUES
 	-- alice, alice123
-	('Alice', 'Johnson', 'alice', '$2y$12$G/2JzuqkVdIgTkzlGGLuGuO6fZ3d6SMlDfDel71YMSfeaiR5XB2Wm', 'alice@example.com', 25),
+	('Alice', 'Johnson', 'alice', '$2y$12$G/2JzuqkVdIgTkzlGGLuGuO6fZ3d6SMlDfDel71YMSfeaiR5XB2Wm', 'alice@example.com', 'female', 25),
 	-- bob, bob123
-	('Bob', 'Smith', 'bob', '$2y$12$AbRAKIGd1ZLrt863qgzyHOKUZtqOHh3J3uaIVOpPTqThr7C7NHbTO', 'bob@example.com', 30),
+	('Bob', 'Smith', 'bob', '$2y$12$AbRAKIGd1ZLrt863qgzyHOKUZtqOHh3J3uaIVOpPTqThr7C7NHbTO', 'bob@example.com', 'male', 30),
 	-- charlie, charlie123
-	('Charlie', 'Brown', 'charlie', '$2y$12$9b5fQJHQgO4KSL7vPUUig.koLEJmQLzVXGKXQjoukxNxfpoHMmthy', 'charlie@example.com', 22),
+	('Charlie', 'Brown', 'charlie', '$2y$12$9b5fQJHQgO4KSL7vPUUig.koLEJmQLzVXGKXQjoukxNxfpoHMmthy', 'charlie@example.com', 'male',  22),
 	-- diana, diana123
-	('Diana', 'Miller', 'diana', '$2y$12$uMpKtu91mGmIhZc7a.Xl4OXutZWpHKzmrLg3sLszRW4Uc/1tQN0K.', 'diana@example.com', 28),
+	('Diana', 'Miller', 'diana', '$2y$12$uMpKtu91mGmIhZc7a.Xl4OXutZWpHKzmrLg3sLszRW4Uc/1tQN0K.', 'diana@example.com', 'female', 28),
 	-- eve, eve123
-	('Eve', 'Davis', 'eve', '$2y$12$syRex.ljPVgq7s0dGIFB6uL2VEc1UfvgnzTHup7Rh02QDyQE4ycM6', 'eve@example.com', 26);
+	('Eve', 'Davis', 'eve', '$2y$12$syRex.ljPVgq7s0dGIFB6uL2VEc1UfvgnzTHup7Rh02QDyQE4ycM6', 'eve@example.com', 'female', 26);
 
 CREATE TABLE IF NOT EXISTS blog (
 	id INT AUTO_INCREMENT PRIMARY KEY,
