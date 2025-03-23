@@ -14,7 +14,12 @@ if (!$session->isAdmin())
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	/* Perform search */
+	$search = true;
 	$conditions = [];
+	if (isset($_GET['id'])) {
+		$conditions['id'] = $_GET['id'];
+		$search = false; /* Disable search if ID specified */
+	}
 	if (isset($_GET['username'])) {
 		$conditions['username'] = '%'.$_GET['username'].'%';
 	}
@@ -23,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	}
 	/* Return filtered results */
 	$results = array();
-	foreach ($users->get($conditions, search: true) as $v) {
+	foreach ($users->get($conditions, search: $search) as $v) {
 		$results[] = array(
-			'userId' => $v['id'],
+			'id' => $v['id'],
 			'username' => $v['username'],
 			'displayname' => $v['displayname'],
 			'email' => $v['email'],
@@ -35,8 +40,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	header('Content-Type: application/json');
 	echo json_encode($results);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	/* Perform update (TODO) */
-	$app->error('Not yet implemented');
+	/* Perform update */
+	$uid = 0;
+	if (isset($_REQUEST['id']) && filter_var($_REQUEST['id'], FILTER_VALIDATE_INT))
+		$uid = intval($_REQUEST['id']);
+	/* Read params */
+	/* Proper sanity checks should be added at some point */
+	$json = json_decode($data, true);
+	$params = array();
+	if (isset($json['disabled']))
+		$params[] = 'disabled = '.($json['disabled'] === 1 ? 1 : 0);
+	/* This is an admin endpoint, so data gets fed directly into the database */
+	$users->setUser($uid, $params);
+	header('Content-Type: text/plain');
+	echo 'Success';
 } else {
 	$app->error('Request type is unsupported.', 'Bad request', 'Type: '.$_SERVER['REQUEST_METHOD'], 401);
 }
