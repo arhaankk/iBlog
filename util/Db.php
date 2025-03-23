@@ -36,6 +36,8 @@ class Db
 			return;
 		}
 		$ddl_path = \IB::getRootDir() . '/sql/ddl.sql';
+		if (!file_exists($ddl_path))
+			$this->app->error('Unable to find DDL at expected path.', 'DDL installation failed', $ddl_path);
 		try {
 			$result = $conn->query(file_get_contents($ddl_path));
 		} catch (\PDOException $e) {
