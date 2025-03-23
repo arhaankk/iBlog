@@ -1,7 +1,10 @@
 <?php
-include "databaseConnection.php";
+require_once('../util/IB.php');
+$app = IB::app();
+$db = $app->getClass('IB\Db');
+$session = $app->getClass('IB\Session');
 
-$pdo = databaseConnection();
+$pdo = $db->connect();
 
 if (!isset($_GET['id'])) {
     die("id required");
@@ -36,37 +39,12 @@ if (!isset($_GET['id'])) {
         //todo retrieve comments from db
     }
 }
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cynthia's Blog — iBlog</title>
-    <link rel="stylesheet" href="../styles/style.css">
-    <link rel="stylesheet" href="../styles/blogCard.css">
-    <meta name="description" content="The administrator page for iBlog">
-</head>
-<body>
-<nav>
-    <span class="header-brand"><a href="index.html">iBlog</a></span>
-    <ul class="header-nav">
-        <li><a href="index.html">Home</a>
-        <li><a href="blogCard.html">My Blogs</a>
-        <li><a href="blog-write.html">Write</a>
-    </ul>
-    <div class="header-acct">
-        <div class="dropdown"><a href="profile.html">Profile</a>
-            <ul class="dropdown">
-                <li><a href="admin.html">Admin panel</a>
-                <li><a href="signin.html">Sign in</a>
-                <li><a href="signup.html">Sign up</a>
-                <li><a href="#">Log out</a>
-            </ul>
-        </div>
-    </div>
-</nav>
+/* Write page */
+$page = $app->getClass('IB\Page');
+$page->setTitle($post['title']);
+$page->preamble();
+?>
 
 <main>
     <section class="card--medium">
@@ -121,7 +99,4 @@ if (!isset($_GET['id'])) {
     </section>
 </main>
 
-<footer>
-    <small>&copy; iBlog 2025</small>
-</footer>
-
+<?php $page->epilogue(); ?>

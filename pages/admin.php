@@ -1,30 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Administration — iBlog</title>
-	<link rel="stylesheet" href="../styles/style.css">
-	<meta name="description" content="The administrator page for iBlog">
-<body>
-<nav>
-	<span class="header-brand"><a href="index.html">iBlog</a></span>
-	<ul class="header-nav">
-		<li><a href="index.html">Home</a>
-		<li><a href="blogCard.html">My Blogs</a>
-		<li><a href="blog-write.html">Write</a>
-	</ul>
-	<div class="header-acct">
-		<div class="dropdown"><a href="profile.html">Profile</a>
-			<ul class="dropdown">
-				<li><a href="admin.html">Admin panel</a>
-				<li><a href="signin.html">Sign in</a>
-				<li><a href="signup.html">Sign up</a>
-				<li><a href="#">Log out</a>
-			</ul>
-		</div>
-	</div>
-</nav>
+<?php
+require_once('../util/IB.php');
+$app = IB::app();
+$users = $app->getClass('IB\Users');
+$session = $app->getClass('IB\Session');
+if (!$session->isAdmin())
+	$app->redirect('/');
+$page = $app->getClass('IB\Page');
+$page->setTitle('Administration');
+$page->setDescription('The administrator page for iBlog.');
+$page->preamble();
+?>
 
 <main>
 	<h1>Administration</h1>
@@ -65,6 +50,4 @@
 	</div>
 </main>
 
-<footer>
-	<small>&copy; iBlog 2025</small>
-</footer>
+<?php $page->epilogue(); ?>
