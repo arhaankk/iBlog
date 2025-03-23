@@ -33,6 +33,9 @@ if (!isset($_GET['id'])) {
 /* Write page */
 $page = $app->getClass('IB\Page');
 $page->setTitle($post['title']);
+$page->setTitle($post['title']);
+$page->addCrumb($author['displayname'].'\'s Posts', '{{PAGES}}/posts.php?user='.$author['id']);
+$page->addCrumb($post['title'], '{{PAGES}}/single-post-view.php?id='.$post['id']);
 $page->preamble();
 ?>
 

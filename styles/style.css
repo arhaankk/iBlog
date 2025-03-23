@@ -37,7 +37,7 @@ body {
 	font-family: Poppins, sans-serif;
 	font-size: 14pt;
 }
-nav, main, footer {
+nav, main, footer, .breadcrumbs {
 	width: 100%;
 	max-width: 1140px;
 	margin: 0 auto;
@@ -163,6 +163,25 @@ nav > *:last-child {
 }
 .header-nav > li > a {
 	color: var(--color-fg);
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+	list-style: none;
+	display: flex;
+	gap: 0.5rem;
+	flex-basis: 0;
+	/* ugly layout workaround */
+	margin-bottom: -2rem;
+	margin-top: 0.5rem;
+}
+.breadcrumbs > li + li::before {
+	content: '>';
+	margin-right: 0.5rem;
+}
+.breadcrumbs a {
+	color: var(--color-fg);
+	opacity: 0.75;
 }
 
 /* Dropdowns */

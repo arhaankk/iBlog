@@ -17,9 +17,8 @@ $you = ($session->isAuthenticated() && $session->getUser()['id'] === $uid);
 
 $page = $app->getClass('IB\Page');
 $page->setTitle($target['displayname'].'\'s Posts');
-if ($you)
-	$page->setTitle($target['displayname'].'\'s Posts');
 $page->setDescription('View blog posts from '.$target['displayname'].' on iBlog!');
+$page->addCrumb($target['displayname'].'\'s Posts', '{{PAGES}}/posts.php?user='.$target['id']);
 $page->preamble();
 ?>
 

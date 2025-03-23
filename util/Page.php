@@ -10,6 +10,7 @@ class Page
     protected $app = null;
     protected $data = null;
     protected $pdo = null;
+    protected $crumbs = [];
 
 	protected function __construct(&$app)
 	{
@@ -27,6 +28,7 @@ class Page
 			$this->data['user_id'] = $this->session->getUser()['id'];
 			$this->data['displayname'] = $this->session->getUser()['displayname'];
 		}
+		$this->addCrumb('iBlog', '{{PAGES}}');
 	}
 
 	/**
@@ -143,6 +145,30 @@ nav;
 </nav>
 nav;
 		echo $this->formatTemplateString($nav, array());
+		$this->breadcrumbs();
+	}
+
+	/**
+	 * Print breadcrumbs given the necessary info
+	 */
+	protected function breadcrumbs() : void
+	{
+		echo '<ul class="breadcrumbs">';
+		foreach ($this->crumbs as $crumb) {
+			$path = htmlspecialchars($crumb['path']);
+			$name = htmlspecialchars($crumb['name']);
+			$data = "<li><a href=\"$path\">$name</a></li>";
+			echo $this->formatTemplateString($data, array());
+		}
+		echo '</ul>';
+	}
+
+	/**
+	 * Add a breadcrumb
+	 */
+	public function addCrumb(string $name, string $path) : void
+	{
+		$this->crumbs[] = ['name' => $name, 'path' => $path];
 	}
 
 	/**

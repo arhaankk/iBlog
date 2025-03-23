@@ -110,8 +110,9 @@ HTML;
 
 /* Write page */
 $page = $app->getClass('IB\Page');
-$page->setTitle('Write');
+$page->setTitle('Write Post');
 $page->setDescription('The writing page for iBlog.');
+$page->addCrumb('Write Post', '{{PAGES}}/blog-write.php');
 $page->preamble();
 ?>
 

@@ -8,6 +8,7 @@ $user = $session->getUser();
 $page = $app->getClass('IB\Page');
 $page->setTitle('Profile');
 $page->setDescription('Manage your profile.');
+$page->addCrumb('Profile', '{{PAGES}}/profile.php');
 $page->preamble();
 ?>
 <link rel="stylesheet" href="../styles/signin-signup.css">
