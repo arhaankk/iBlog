@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 /* Generate page */
 $page = $app->getClass('IB\Page');
 $page->setTitle('Sign in');
+$page->addCrumb('Sign in', '{{PAGES}}/signin.php');
 $page->preamble();
 ?>
 <link rel="stylesheet" href="<?php echo $page->data('root'); ?>/styles/signin-signup.css">

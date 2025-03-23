@@ -7,6 +7,7 @@ if ($session->isAuthenticated())
 	$app->redirect('/');
 $page = $app->getClass('IB\Page');
 $page->setTitle('Sign up');
+$page->addCrumb('Sign up', '{{PAGES}}/signup.php');
 $page->preamble();
 ?>
 <link rel="stylesheet" href="../styles/signin-signup.css">

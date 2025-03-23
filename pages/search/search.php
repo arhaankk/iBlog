@@ -50,6 +50,7 @@ $sql = "
 $page = $app->getClass('IB\Page');
 $page->setTitle('Search Posts');
 $page->setDescription('Search iBlog for relevant posts');
+$page->addCrumb('Search Posts', '{{PAGES}}/search/search.php');
 $page->preamble();
 ?>
 <link rel="stylesheet" href="<?php echo $page->data('pages'); ?>/search/style.css">

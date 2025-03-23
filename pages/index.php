@@ -12,8 +12,10 @@ $page->preamble();
 	<p>Welcome to my iBlog!</p>
 
 	<?php if (!$session->isAuthenticated()) { ?>
-	<a href="<?php echo $page->data('pages'); ?>/signin.php" class="button">Log In</a>
+	<a href="<?php echo $page->data('pages'); ?>/signup.php" class="button">Sign up</a>
+	<a href="<?php echo $page->data('pages'); ?>/signin.php" class="button">Sign in</a>
 	<?php } else { ?>
+	<a href="<?php echo $page->data('pages'); ?>/posts.php?user=<?php echo $session->getUser()['id'] ?>" class="button">My Posts</a>
 	<a href="<?php echo $page->data('pages'); ?>/blog-write.php" class="button">Write Post</a>
 	<?php } ?>
 	<a href="<?php echo $page->data('pages'); ?>/search/search.php" class="button">Search Posts</a>
