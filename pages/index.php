@@ -14,7 +14,7 @@ $page->preamble();
 	<?php if (!$session->isAuthenticated()) { ?>
 	<a href="<?php echo $page->data('pages'); ?>/signin.php" class="button">Log In</a>
 	<?php } else { ?>
-	<a href="<?php echo $page->data('pages'); ?>blog-write.html" class="button">Write Post</a>
+	<a href="<?php echo $page->data('pages'); ?>/blog-write.php" class="button">Write Post</a>
 	<?php } ?>
 	<hr>
 	<!-- TODO: Replace placeholder -->

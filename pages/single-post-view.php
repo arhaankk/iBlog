@@ -49,7 +49,7 @@ $page->preamble();
 <main>
     <section class="card--medium">
         <div class="blog-content">
-            <img src="../images/profilePic.jpg" alt="User1 Profile Picture" class="post-avatar">
+            <img src="<?php echo $page->data('actions')."/avatar.php?id=".$post['userId']; ?>" alt="User1 Profile Picture" class="post-avatar">
             <!-- Placeholder image,todo fetch author's image from db -->
             <strong class="post-user-name"><?php echo $authorUserName; ?>: </strong>
             <h2>
