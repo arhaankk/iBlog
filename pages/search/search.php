@@ -1,6 +1,6 @@
 <?php
-require_once('../blog-card.php');
 require_once('../../util/IB.php');
+require_once('../../util/blog-card.php');
 $app = IB::app();
 $db = $app->getClass('IB\Db');
 $pdo = $db->connect();
