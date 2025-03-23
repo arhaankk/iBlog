@@ -52,6 +52,29 @@ class Users
 		return array('mime' => $mime, 'data' => $data);
 	}
 
+	/**
+	 * Set a profile picture from an ID and data.
+	 */
+	public function setImage(int $id, string $data): void
+	{
+		/* Refuse to store non-images */
+		$mime = (new \finfo(FILEINFO_MIME_TYPE))->buffer($data);
+		if (strncmp($mime, "image/", 6) !== 0) {
+			$this->app->error('Profile picture has invalid header.', 'Failed to set avatar', "Type: $mime\nUser ID: $id");
+		}
+
+		$sql = 'UPDATE users SET profile_img = :data WHERE id = :id';
+		try {
+			$s = $this->db->connect()->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
+			$s->bindParam(':id', $id);
+			$s->bindParam(':data', $data);
+			$s->execute();
+		} catch (\PDOException $e) {
+			$sql = $query['sql'];
+			$this->app->error($e->getMessage(), 'Failed to set avatar', "Query: $sql\n\n".$e->getTraceAsString());
+		}
+	}
+
 	public static function getInstance(&$app)
 	{
 		if ($app->hasClass(static::class))

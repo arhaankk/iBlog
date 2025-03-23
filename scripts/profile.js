@@ -4,6 +4,26 @@ document.addEventListener("DOMContentLoaded", function () {
 	const inputs = document.querySelectorAll(".login__input");
 	const form = document.querySelector('form');
 
+	let uploadImage = async () => {
+		const avatar = document.querySelector('#avatar');
+		if (avatar.files.length < 1)
+			return true;
+		const data = await avatar.files[0].arrayBuffer();
+		console.log(data);
+		const resp = await fetch('../actions/set-avatar.php', {
+			method: "POST",
+			body: data
+		});
+		if (resp.ok) {
+			avatar.value = null;
+			alert('Profile image updated successfully.');
+			return true;
+		} else {
+			alert('Failed to upload profile image.');
+			return false;
+		}
+	}
+
 	let validateForm = () => {
 		let valid = true;
 		let err = '';
@@ -41,8 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		editButton.style.display = "none";
 	});
 
-	saveButton.addEventListener("click", function () {
+	saveButton.addEventListener("click", async function () {
 		if (!validateForm())
+			return;
+		if (!await uploadImage())
 			return;
 		inputs.forEach(input => input.setAttribute("disabled", true));
 		saveButton.style.display = "none";
