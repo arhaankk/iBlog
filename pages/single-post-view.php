@@ -37,6 +37,7 @@ $page->preamble();
 ?>
 
 <main>
+    <script src="../scripts/blogCard.js"></script>
     <?php
 		require_once('../util/blog-card.php');
 		echo generatePostHtml($post, null, true);

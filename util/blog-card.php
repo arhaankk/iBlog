@@ -68,12 +68,12 @@ function generatePostHtml($post, $pdo, $full=true)
 	if ($full) {
 		$html .= '<div class="comments"><h3>Comments</h3>';
 		$html .= '<p class="placeholder">Loading comments…</p>';
-		$actions=$page->data('actions');
+		$postId = $post['id'];
 		$html .= <<<form
 <div class="comment-form">
-	<form id="commentForm" class="form--inline">
+	<form id="commentForm" class="form--inline" data-post="$postId">
 		<label for="commentInput"></label><input type="text" id="commentInput" placeholder="Add a comment...">
-		<button type="button" onclick="addComment(event)">Submit</button>
+		<button type="button">Submit</button>
 	</form>
 </div>
 form;
