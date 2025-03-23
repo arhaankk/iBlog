@@ -154,6 +154,8 @@ nav > *:last-child {
 	display: flex;
 	gap: 1rem;
 	flex: 2;
+	justify-content: center;
+	padding-left: 0;
 }
 .header-nav > li + li::before {
 	content: '—';
