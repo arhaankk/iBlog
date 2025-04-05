@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		placeholder.style['display'] = 'none';
 		return true;
-
 	}
 
 	let validateComment = async () => {
@@ -83,4 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	formSubmit.addEventListener('click', handleForm);
 	commentHeading.after(commentsContainer);
 	loadComments();
+
+	setInterval(loadComments, 5000);
 });
