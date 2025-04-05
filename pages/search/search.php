@@ -53,7 +53,7 @@ $page->setDescription('Search iBlog for relevant posts');
 $page->addCrumb('Search Posts', '{{PAGES}}/search/search.php');
 $page->preamble();
 ?>
-<link rel="stylesheet" href="<?php echo $page->data('pages'); ?>/search/style.css">
+<link rel="stylesheet" href="<?php echo $page->data('pages'); ?>style.css">
 
 <main>
     <h1>Search Posts</h1>
