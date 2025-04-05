@@ -11,22 +11,19 @@ if (!$session->isAuthenticated())
 $userId = $session->getUser()['id'];
 $pdo = $db->connect();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form data
     $title = trim($_POST['title']);
     $content = trim($_POST['content']);
 
-    // Validate inputs
     if (empty($title) || empty($content)) {
         die("Title and content are required.");
     }
 
     // Handle image uploads
-    $imageBlobs = []; // Array to store multiple images as BLOBs
+    $imageBlobs = [];
     if (isset($_FILES['images']) && $_FILES['images']['error'][0] !== UPLOAD_ERR_NO_FILE) {
         foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
             // Check for upload errors
             if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
-                // Enforce maximum file size (10 MB)
                 $maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
                 if ($_FILES['images']['size'][$key] > $maxFileSize) {
                     die("File too large: " . htmlspecialchars($_FILES['images']['name'][$key]) . ". Maximum allowed size is 10 MB.");
@@ -38,16 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     die("Invalid image file: " . htmlspecialchars($_FILES['images']['name'][$key]));
                 }
 
-                // Optionally, restrict allowed image types (e.g., JPEG, PNG, GIF)
                 $allowedTypes = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF];
                 if (!in_array($imageInfo[2], $allowedTypes)) {
                     die("Unsupported image type: " . htmlspecialchars($_FILES['images']['name'][$key]));
                 }
 
-                // Read the uploaded file into a BLOB
                 $imageBlobs[] = file_get_contents($tmpName);
             } else {
-                // Handle other upload errors
                 die("Error uploading file: " . htmlspecialchars($_FILES['images']['name'][$key]));
             }
         }
@@ -88,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Commit transaction
         $pdo->commit();
-        // Display success message and redirect after 3 seconds
         echo "Blog post created successfully! Redirecting in 1.5 seconds...";
 
         // Use JavaScript for client-side redirection
@@ -100,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>
 HTML;
 
-        exit(); // Ensure no further code is executed
+        exit();
     } catch (PDOException $e) {
         // Rollback transaction on error
         $pdo->rollBack();
@@ -132,6 +125,6 @@ $page->preamble();
         <button type="submit" class="button--active">Publish</button>
     </form>
 </main>
-<script src="scripts/blog-write.js"></script>
+<script src="../scripts/blog-write.js"></script>
 
 <?php $page->epilogue(); ?>

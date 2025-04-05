@@ -19,7 +19,6 @@ function generatePostHtml($post, $pdo, $full=true)
 	$stmt->execute([':postId' => $post['id']]);
 	$posts = $stmt->fetchColumn();
 
-	// If no posts are found, exit
 	if (empty($posts)) {
 		die("No posts found.");
 	}
