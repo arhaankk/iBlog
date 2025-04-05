@@ -1,14 +1,16 @@
 <?php
-session_start();
+require_once('../util/IB.php');
+$app = IB::app();
+$users = $app->getClass('IB\Users');
+$db = $app->getClass('IB\Db');
+$session = $app->getClass('IB\Session');
+if (!$session->isAuthenticated())
+	$app->redirect('/signin.php');
 
-// Hardcoded user ID (todo replace this with dynamic user ID after implementing authentication)
-$userId = mt_rand(1, 5); //random 1-5
-
-include 'databaseConnection.php';
-$pdo = databaseConnection(); // Use '127.0.0.1' if localhost fails
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'], $_POST['content'])) {
+/* Handle form submission */
+$userId = $session->getUser()['id'];
+$pdo = $db->connect();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
     $content = trim($_POST['content']);
 
@@ -20,24 +22,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'], $_POST['cont
     $imageBlobs = [];
     if (isset($_FILES['images']) && $_FILES['images']['error'][0] !== UPLOAD_ERR_NO_FILE) {
         foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
+            // Check for upload errors
             if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
                 $maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
                 if ($_FILES['images']['size'][$key] > $maxFileSize) {
                     die("File too large: " . htmlspecialchars($_FILES['images']['name'][$key]) . ". Maximum allowed size is 10 MB.");
                 }
 
-                $imageInfo = getimagesize($tmpName);
+                // Verify if the file is a valid image
+                $imageInfo = getimagesize($tmpName); // Returns false if not a valid image
                 if ($imageInfo === false) {
                     die("Invalid image file: " . htmlspecialchars($_FILES['images']['name'][$key]));
                 }
 
-                // Restrict allowed image types (JPEG, PNG, GIF)
                 $allowedTypes = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF];
                 if (!in_array($imageInfo[2], $allowedTypes)) {
                     die("Unsupported image type: " . htmlspecialchars($_FILES['images']['name'][$key]));
                 }
 
-                // Read the uploaded file into a BLOB
                 $imageBlobs[] = file_get_contents($tmpName);
             } else {
                 die("Error uploading file: " . htmlspecialchars($_FILES['images']['name'][$key]));
@@ -45,10 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'], $_POST['cont
         }
     }
 
+    // Insert blog post into the database
     try {
         // Begin transaction
         $pdo->beginTransaction();
 
+        // Insert the blog post
         $stmt = $pdo->prepare("
             INSERT INTO blog (title, content, userId)
             VALUES (:title, :content, :userId)
@@ -59,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'], $_POST['cont
             ':userId' => $userId,
         ]);
 
+        // Get the last inserted ID
         $postId = $pdo->lastInsertId();
 
         // Insert images into the imageDB table
@@ -90,7 +95,36 @@ HTML;
 
         exit();
     } catch (PDOException $e) {
+        // Rollback transaction on error
         $pdo->rollBack();
         die("Error creating blog post: " . $e->getMessage());
     }
 }
+
+/* Write page */
+$page = $app->getClass('IB\Page');
+$page->setTitle('Write Post');
+$page->setDescription('The writing page for iBlog.');
+$page->addCrumb('Write Post', '{{PAGES}}/blog-write.php');
+$page->preamble();
+?>
+
+<main>
+    <h1>Write Your Blog Post</h1>
+    <p>Get typing!</p>
+    <form id="blogForm" class="card" action="<?php echo $page->data('pages'); ?>/blog-write.php" method="POST" enctype="multipart/form-data">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="content">Content:</label>
+        <textarea id="content" class="writer" name="content" rows="10" required></textarea>
+
+        <label for="image">Upload Image:</label>
+		<input type="file" id="image" name="images[]" accept="image/*" multiple>
+        <hr>
+        <button type="submit" class="button--active">Publish</button>
+    </form>
+</main>
+<script src="../scripts/blog-write.js"></script>
+
+<?php $page->epilogue(); ?>

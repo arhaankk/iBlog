@@ -13,6 +13,28 @@ COSC 360: Web Programming
 
 ---
 
+## Deployment quickstart
+
+To deploy on the UBC server, simply install the files to `~/public_html/iBlog`.  
+You can configure it by creating a `config.php` file with the contents below.
+
+```PHP
+<?php
+$config['web']['hostname'] = 'cosc360.ok.ubc.ca';
+$config['web']['tls'] = true;
+$config['web']['path'] = '/YOUR_CWL/iBlog';
+$config['db']['host'] = 'localhost';
+$config['db']['port'] = 3306;
+$config['db']['database'] = 'YOUR_CWL';
+$config['db']['user'] = 'YOUR_CWL';
+$config['db']['pass'] = 'YOUR_CWL';
+```
+
+The DDL will be installed automatically if it is not detected.  
+The default admin user is `alice` with password `alice123`.
+
+---
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)  
