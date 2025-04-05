@@ -55,7 +55,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_stmt_send_long_data($insert_stmt, 7, $profile_img);
 
             if ($insert_stmt->execute()) {
-                echo "An account for the user " . htmlspecialchars($username) . " has been created<br><a href=\"../pages/signin.php\">Click here to log in</a>";
+                echo "An account for the user " . htmlspecialchars($username) . " has been created
+                        <br>
+                        Redirecting to login page";
+
+                // Use JavaScript for client-side redirection
+                echo <<<HTML
+            <script>
+                setTimeout(function() {
+                    window.location.href = "../pages/signin.php";
+                }, 1500); // Redirect after 1.5 seconds
+            </script>
+HTML;
+
+                exit();
             } else {
                 echo "Error: " . $insert_stmt->error;
             }
