@@ -34,7 +34,7 @@ const linkSelect = async (p, name, event) => {
 			pane[1].innerHTML = 'Work in progress.';
 			break;
 		case 'Users':
-			buildPane(1, 'Find User', ['By Username', 'By Email']);
+			buildPane(1, 'Find User', ['Show All', 'Search by Username', 'Search by Email']);
 			break;
 		}
 		selectPane(p, name);
@@ -45,10 +45,12 @@ const linkSelect = async (p, name, event) => {
 		case 'Users':
 			url = '../actions/users.php';
 			switch (name) {
-			case 'By Username':
+			case 'Show All':
+				break;
+			case 'Search by Username':
 				url += '?username='+encodeURIComponent(prompt('Enter the username:'));
 				break;
-			case 'By Email':
+			case 'Search by Email':
 				url += '?email='+encodeURIComponent(prompt('Enter the email:'));
 				break;
 			default:
