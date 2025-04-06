@@ -18,8 +18,8 @@ class Page
 		$this->web = $app->config('web');
 		$this->data = array(
 			'root' => $this->getRoot(),
-			'pages' => $this->getRoot().'/pages',
-			'actions' => $this->getRoot().'/actions',
+			'pages' => $this->getRoot().'pages',
+			'actions' => $this->getRoot().'actions',
 			'username' => 'Guest',
 		);
 		$this->session = $app->getClass('IB\Session');
