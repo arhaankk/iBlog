@@ -9,19 +9,25 @@ if ($session->isAuthenticated())
 /* Handle login */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (empty($_POST['user']) || empty($_POST['pass'])) {
-		$app->error('The username and password are required');
+		$app->error('The username and password are required', 'Bad request', code: 401);
 	}
 	$user = $_POST['user'];
 
 	$user = $users->get(['username' => $user]);
 	if (count($user) < 1) {
-		$app->error('This user was not found');
+		$app->error('This user was not found', 'Sign-in failed', code: 401);
 	}
 	$user = $user[0];
 	$pass = $_POST['pass'];
 	if (!password_verify($pass, $user['password'])) {
-		$app->error('The password was incorrect.');
+		$app->error('The password was incorrect.', 'Sign-in failed', code: 401);
 	}
+
+	/* If they are disabled, tell them about it */
+	if ($user['disabled'] === 1) {
+		$app->error("Your account has been disabled by an administrator. Contact them to get it re-enabled.", 'Sign-in failed', code: 401);
+	}
+
 	/* If all is good, log them in! */
 	$session->setUser($user['id']);
 	$app->redirect('/');

@@ -30,6 +30,15 @@ class Session
 		$users = $this->users->get(['id' => $id]);
 		if (count($users) < 1)
 			return null;
+
+		/*
+		 * If their account is disabled, ignore it in the session.
+		 * This will effectively log them out until they are re-enabled.
+		 */
+		if ($users[0]['disabled'] === 1) {
+			return null;
+		}
+
 		$this->user = $users[0];
 		return $this->user;
 	}
