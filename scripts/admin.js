@@ -31,7 +31,7 @@ const linkSelect = async (p, name, event) => {
 		pane[2].innerHTML = '';
 		switch (name) {
 		case 'General':
-			pane[1].innerHTML = 'Work in progress.';
+			buildPane(1, 'Options', ['Server Statistics', 'Check Configuration']);
 			break;
 		case 'Users':
 			buildPane(1, 'Find User', ['Show All', 'Search by Username', 'Search by Email']);
@@ -58,10 +58,11 @@ const linkSelect = async (p, name, event) => {
 					return; /* Not a user */
 				}
 				/* Build next pane */
+				selectPane(p, name);
 				buildUserPane(2, users[name]);
 				return;
 			}
-			const resp = await fetch(url);
+			resp = await fetch(url);
 			if (!resp.ok) {
 				alert('Failed to perform search. Please try a different query.');
 				return;
@@ -78,6 +79,31 @@ const linkSelect = async (p, name, event) => {
 				users[results[i]['username']] = results[i];
 			}
 			buildPane(1, 'Results', names);
+			break;
+		case 'General':
+			url = '../actions/info.php';
+			switch (name) {
+			case 'Server Statistics':
+				url += '?query=stats';
+				break;
+			case 'Check Configuration':
+				url += '?query=config';
+			}
+			resp = await fetch(url);
+			if (!resp.ok) {
+				alert('Failed to perform check. The server may be misconfigured.');
+				return;
+			}
+			results = await resp.json();
+			switch (name) {
+			case 'Server Statistics':
+				buildCustomPane(2, 'Statistics', null, results);
+				break;
+			case 'Check Configuration':
+				buildCustomPane(2, 'Configuration', null, results);
+			}
+			selectPane(p, name);
+			break;
 		}
 	case 2:
 		switch (paneStates[0]) {
@@ -123,6 +149,22 @@ const buildPane = (i, title, links) => {
 		paneLinks.appendChild(item);
 	}
 	pane[i].appendChild(paneLinks);
+}
+
+const buildCustomPane = (i, title, preamble, info) => {
+	/* Again, not that ideal */
+	pane[i].innerHTML = '';
+	const paneTitle = document.createElement('h2');
+	paneTitle.innerText = title;
+	pane[i].appendChild(paneTitle);
+	const paneInfo = document.createElement('ul');
+	for (let key of Object.keys(info)) {
+		const val = info[key];
+		const item = document.createElement('li');
+		item.innerText = key+': '+val;
+		paneInfo.appendChild(item);
+	}
+	pane[i].appendChild(paneInfo);
 }
 
 const buildUserPane = (i, user) => {
