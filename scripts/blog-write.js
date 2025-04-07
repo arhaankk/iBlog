@@ -1,5 +1,5 @@
 document.getElementById('blogForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    //event.preventDefault();
     
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
@@ -12,5 +12,5 @@ document.getElementById('blogForm').addEventListener('submit', function(event) {
     alert('Blog post published!');
     
     // Clear the form
-    document.getElementById('blogForm').reset();
+    // document.getElementById('blogForm').reset();
 });
