@@ -115,6 +115,14 @@ const linkSelect = async (p, name, event) => {
 			case 'Disable User':
 				await setUser(target, {'disabled': 1});
 				break;
+			case 'Reset Password':
+                const pass = prompt('Enter the new password:');
+                if (pass === null || pass.length < 1) {
+                    alert('Password reset cancelled.');
+                    return;
+                }
+				await setUser(target, {'password': pass});
+				break;
 			}
 			/* Try to fetch specific user and rebuild */
 			if (users && target && target in users) {
@@ -190,14 +198,18 @@ const buildUserPane = (i, user) => {
 		paneInfo.appendChild(item);
 	}
 
-	/* Disable / enable */
-	const item = document.createElement('li');
-	const link = document.createElement('a');
-	link.href='#';
-	link.innerText = user['disabled'] === 1 ? 'Enable User' : 'Disable User';
-	link.addEventListener('click', (e) => { linkSelect(i, link.innerText, e) });
-	item.appendChild(link);
-	paneInfo.appendChild(item);
+    /* User actions */
+    const links = [user['disabled'] === 1 ? 'Enable User' : 'Disable User', 'Reset Password'];
+	const paneLinks = document.createElement('ul');
+	for (let j = 0; j < links.length; j++) {
+		const item = document.createElement('li');
+		const link = document.createElement('a');
+		link.href='#';
+		link.innerText = links[j];
+		link.addEventListener('click', (e) => { linkSelect(i, links[j], e) });
+		item.appendChild(link);
+		paneInfo.appendChild(item);
+	}
 
 	pane[i].appendChild(paneInfo);
 }

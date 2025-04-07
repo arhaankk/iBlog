@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	/* Perform update */
 	$uid = 0;
+	$password = null;
 	if (isset($_REQUEST['id']) && filter_var($_REQUEST['id'], FILTER_VALIDATE_INT))
 		$uid = intval($_REQUEST['id']);
 	/* Read params */
@@ -51,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	$params = array();
 	if (isset($json['disabled']))
 		$params[] = 'disabled = '.($json['disabled'] === 1 ? 1 : 0);
+	if (isset($json['password']) && !empty($json['password']))
+		$params['password'] = $users->hashPassword($json['password']);
 	/* This is an admin endpoint, so data gets fed directly into the database */
 	$users->setUser($uid, $params);
 	header('Content-Type: text/plain');
