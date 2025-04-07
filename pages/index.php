@@ -19,6 +19,9 @@ $page->preamble();
 	<a href="<?php echo $page->data('pages'); ?>/blog-write.php" class="button">Write Post</a>
 	<?php } ?>
 	<a href="<?php echo $page->data('pages'); ?>/search/search.php" class="button">Search Posts</a>
+	<?php if ($session->isAdmin()) { ?>
+	<a href="<?php echo $page->data('pages'); ?>/admin.php" class="button">Admin Panel</a>
+	<?php } ?>
 	<hr>
 	<!-- TODO: Replace placeholder -->
 	<h2>Recent activity</h2>
