@@ -87,6 +87,14 @@ class Users
 	}
 
 	/**
+	 * Hash a user password.
+	 */
+	public function hashPassword(string $password): string
+	{
+    		return password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
+	}
+
+	/**
 	 * Set user information from an ID and data.
 	 * This function is internal and does not validate the provided data.
 	 */
