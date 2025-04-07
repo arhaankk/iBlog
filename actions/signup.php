@@ -1,17 +1,13 @@
 <?php
 require_once('../util/IB.php');
 $app = IB::app();
+$users = $app->getClass('IB\Users');
 require '../util/db_config.php';
 
 function sanitizeInput($data)
 {
     global $connection;
     return mysqli_real_escape_string($connection, trim($data));
-}
-
-function hashPassword($password)
-{
-    return password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -47,8 +43,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $profile_img = NULL;
             if (isset($_FILES["avatar"]) && $_FILES["avatar"]["size"] > 0) {
                 $profile_img = file_get_contents($_FILES["avatar"]["tmp_name"]);
+                /* Refuse to store non-images */
+                $mime = (new \finfo(FILEINFO_MIME_TYPE))->buffer($profile_img);
+                if (strncmp($mime, "image/", 6) !== 0) {
+                    $app->error('Profile picture has invalid header.', 'Failed to set avatar', "Type: $mime", code: 401);
+                }
             }
-            $hashed_password = hashPassword($password);
+            $hashed_password = $users->hashPassword($password);
             $insert_query = "INSERT INTO users (firstname, lastname, username, password, email, age, gender, profile_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $insert_stmt = $connection->prepare($insert_query);
             $insert_stmt->bind_param("sssssisb", $firstname, $lastname, $username, $hashed_password, $email, $age, $gender, $profile_img);
