@@ -8,20 +8,18 @@ function generatePostHtml($post, $pdo, $full=true)
 	$db = $app->getClass('IB\Db');
 	$users = $app->getClass('IB\Users');
 	$session = $app->getClass('IB\Session');
+	$posts = $app->getClass('IB\Posts');
 	$pdo = $db->connect();
 	$page = $app->getClass('IB\Page');
 	//$pdo = databaseConnection();
 
 	// Fetch basic info for all posts in one query
-	$stmt = $pdo->prepare("
-		SELECT * FROM blog WHERE id IN (:postId)
-	");
-	$stmt->execute([':postId' => $post['id']]);
-	$posts = $stmt->fetchColumn();
-
-	if (empty($posts)) {
-		die("No posts found.");
+	$r = $posts->get(['id' => $post['id']]);
+	if (empty($r)) {
+		$pid = $post['id'];
+		$app->error("Attempted to load a post that does not exist in the database (ID: $pid)", 'Failed to load post', code: 500);
 	}
+	$post = $r[0];
 
 	// Fetch images for the post
 	$imageStmt = $pdo->prepare("
@@ -39,6 +37,8 @@ function generatePostHtml($post, $pdo, $full=true)
 	$html .= '<img src="'.$page->data('actions').'/avatar.php?user='.$post['userId'].'" alt="'.$author['displayname'].'\'s Profile Picture" class="post-avatar">';
 	$html .= '<strong class="post-user-name"><a href="'.$page->data('pages').'/posts.php?user='.$author['id'].'">' . htmlspecialchars($author['displayname']) . '</a></strong>';
 	$html .= '<h2>' . htmlspecialchars($post['title']) . '</h2>';
+	if ($full)
+		$html .= '<span><small>Topic: <b>' . htmlspecialchars($post['topic']) . '</b></small></span>';
 	$html .= '<div class="blog-content-text">';
 	$html .= '<p>' . htmlspecialchars($post['content']) . '</p>';
 	$html .= '</div>';
