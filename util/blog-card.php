@@ -38,7 +38,7 @@ function generatePostHtml($post, $pdo, $full=true)
 	$html .= '<strong class="post-user-name"><a href="'.$page->data('pages').'/posts.php?user='.$author['id'].'">' . htmlspecialchars($author['displayname']) . '</a></strong>';
 	$html .= '<h2>' . htmlspecialchars($post['title']) . '</h2>';
 	if ($full)
-		$html .= '<span><small>Topic: <b>' . htmlspecialchars($post['topic']) . '</b></small></span>';
+		$html .= '<span><small>Topic: <a href="'.$page->data('pages').'/search/search.php?topic='.urlencode($post['topic']).'" class="button">' . htmlspecialchars($post['topic']) . '</a></small></span>';
 	$html .= '<div class="blog-content-text">';
 	$html .= '<p>' . htmlspecialchars($post['content']) . '</p>';
 	$html .= '</div>';
