@@ -34,6 +34,18 @@ class Posts
 		return $r;
 	}
 
+	/**
+	 * Add a view to a post if one does not exist.
+	 * Prevention of multiple inserts is handled by the database constraints.
+	 */
+	public function addView(int $postId, int $userId)
+	{
+		$params = ['blogId' => $postId, 'userId' => $userId];
+		$ignore = [23000]; /* Integrity constraint violation */
+		$r = $this->db->insert('postViews', $params, ignore: $ignore);
+		return $r;
+	}
+
 	public static function getInstance(&$app)
 	{
 		if ($app->hasClass(static::class))

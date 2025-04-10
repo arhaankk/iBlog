@@ -30,6 +30,10 @@ if (!isset($_GET['id'])) {
     $author = $users->get(['id' => $post['userId']])[0];
 }
 
+/* Log page views */
+if ($session->isAuthenticated())
+    $posts->addView($post['id'], $session->getUser()['id']);
+
 /* Write page */
 $page = $app->getClass('IB\Page');
 $page->setTitle($post['title']);
