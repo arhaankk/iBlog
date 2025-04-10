@@ -41,6 +41,11 @@ if (isset($_GET['userId'])) {
     $params[':userId'] = $_GET['userId'];
 }
 
+if (isset($_GET['topic'])) {
+    $whereConditions[] = "b.topic = :topic";
+    $params[':topic'] = $_GET['topic'];
+}
+
 // Construct the base SQL query
 $sql = "
     SELECT b.*  , u.username AS authorName
@@ -94,6 +99,19 @@ $page->preamble();
                 <div class="col-md-6">
                     <label for="userIdFilter" class="form-label">Filter by User ID</label>
                     <input type="number" class="form-control" id="userIdFilter" placeholder="Enter User ID">
+                </div>
+
+                <!-- Topic -->
+                <div class="col-md-6">
+                    <label for="topicFilter" class="form-label">Filter by topic</label>
+                    <select id="topicFilter" name="topicFilter">
+                        <option value="" default>Any topic</option>
+<?php
+    $topics = $app->config('topics');
+    foreach ($topics as $topic)
+        echo "<option>$topic</option>";
+?>
+                    </select>
                 </div>
 
 <!--                        todo make it into a row instead of column-->

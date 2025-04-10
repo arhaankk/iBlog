@@ -31,6 +31,10 @@ function restoreFormStateFromUrl() {
     if (urlParams.has("userId")) {
         userIdFilter.value = urlParams.get("userId");
     }
+
+    if (urlParams.has("topic")) {
+        topicFilter.value = urlParams.get("topic");
+    }
 }
 
 function isFormEmpty() {
@@ -38,8 +42,9 @@ function isFormEmpty() {
         !titleSearch.value.trim() &&
         !contentSearch.value.trim() &&
         !dateFilter.value &&
-        !hasImage.checked &&
-        !userIdFilter.value.trim()
+        //!hasImage.checked &&
+        !userIdFilter.value.trim() &&
+        !topicFilter.value.trim()
     );
 }
 
@@ -59,6 +64,7 @@ searchForm.addEventListener("submit", async (e) => {
     const dateFilterValue = dateFilter.value;
     const hasImageValue = hasImage.checked;
     const userIdFilterValue = userIdFilter.value.trim();
+    const topicFilterValue = topicFilter.value.trim();
 
     // Build Query Parameters
     const queryParams = new URLSearchParams();
@@ -67,6 +73,7 @@ searchForm.addEventListener("submit", async (e) => {
     if (dateFilterValue) queryParams.append("date", dateFilterValue);
     if (hasImageValue) queryParams.append("hasImage", "true");
     if (userIdFilterValue) queryParams.append("userId", userIdFilterValue);
+    if (topicFilterValue) queryParams.append("topic", topicFilterValue);
 
     // Update the URL with the query parameters
     const newUrl = `?${queryParams.toString()}`;
