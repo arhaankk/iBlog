@@ -37,8 +37,10 @@ function generatePostHtml($post, $pdo, $full=true)
 	$html .= '<img src="'.$page->data('actions').'/avatar.php?user='.$post['userId'].'" alt="'.$author['displayname'].'\'s Profile Picture" class="post-avatar">';
 	$html .= '<strong class="post-user-name"><a href="'.$page->data('pages').'/posts.php?user='.$author['id'].'">' . htmlspecialchars($author['displayname']) . '</a></strong>';
 	$html .= '<h2>' . htmlspecialchars($post['title']) . '</h2>';
-	if ($full)
+	if ($full) {
 		$html .= '<span><small>Topic: <a href="'.$page->data('pages').'/search/search.php?topic='.urlencode($post['topic']).'" class="button">' . htmlspecialchars($post['topic']) . '</a></small></span>';
+		$html .= '<span>&nbsp;—&nbsp;<small>Views: <b>'.$post['views'].'</b> '.($post['views'] === 1 ? 'view' : 'views').'</small></span>';
+	}
 	$html .= '<div class="blog-content-text">';
 	$html .= '<p>' . htmlspecialchars($post['content']) . '</p>';
 	$html .= '</div>';
