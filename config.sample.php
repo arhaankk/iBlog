@@ -14,4 +14,6 @@ $config['db']['database'] = 'app';
 $config['db']['user'] = 'AzureDiamond';
 $config['db']['pass'] = 'hunter2';
 
+$config['topics'] = ['Personal', 'Food', 'Travel'];
+
 $config['debug'] = false;
