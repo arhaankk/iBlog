@@ -77,14 +77,17 @@ class Db
 
 	/**
 	 * Connect to the database, prepare a query, and execute it.
+	 * The "ignore" array takes PDO SQLSTATE codes that should not be thrown.
 	 */
-	public function query($sql, $params)
+	public function query($sql, $params, array $ignore = [])
 	{
 		try {
 			$s = $this->connect()->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
 			$s->execute($params);
 			return $s->fetchAll();
 		} catch (\PDOException $e) {
+			if (in_array($s->errorCode(), $ignore))
+				return [];
 			$this->app->error($e->getMessage(), 'Query failed', "Query: $sql\n\n".$e->getTraceAsString());
 		}
 	}
@@ -261,10 +264,10 @@ class Db
 	/**
 	 * Execute a insert query given a pile of parameters
 	 */
-	public function insert(string $target, array $values) : array
+	public function insert(string $target, array $values, array $ignore = []) : array
 	{
 		$query = \IB\Db::buildInsert($target, $values);
-		return $this->query($query['sql'], $query['params']);
+		return $this->query($query['sql'], $query['params'], ignore: $ignore);
 	}
 
 	/**

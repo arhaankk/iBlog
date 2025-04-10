@@ -41,6 +41,14 @@ CREATE TABLE IF NOT EXISTS blog (
 	FOREIGN KEY (userId) REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS postViews (
+	blogId INT NOT NULL,
+	userId INT NOT NULL,
+	viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY(blogId, userId),
+	FOREIGN KEY (blogId) REFERENCES users(id)
+);
+
 CREATE TABLE IF NOT EXISTS postImages (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	postId INT NOT NULL, -- Foreign key to link images to a blog post
