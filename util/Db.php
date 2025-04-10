@@ -155,9 +155,10 @@ class Db
 	 */
 	public function select(array | string $values,
 			array | string $from, array | string $where,
-			string | null $order=null, int | null $limit=null, bool $search=false) : array
+			string | null $order=null, int | null $limit=null, bool $search=false,
+			string | null $groupby=null) : array
 	{
-		$query = \IB\Db::buildSelect($values, $from, $where, $order, $limit, $search);
+		$query = \IB\Db::buildSelect($values, $from, $where, $order, $limit, $search, $groupby);
 		return $this->query($query['sql'], $query['params']);
 	}
 
@@ -166,7 +167,8 @@ class Db
 	 */
 	public static function buildSelect(array | string $values,
 			array | string $from, array | string $where,
-			string | null $order=null, int | null $limit=null, bool $search=false) : array
+			string | null $order=null, int | null $limit=null, bool $search=false,
+			string | null $groupby=null) : array
 	{
 		/* SELECT */
 		$sql = array('SELECT');
@@ -205,6 +207,9 @@ class Db
 		} else {
 			$sql[] = $where;
 		}
+		/* GROUP BY */
+		if ($groupby)
+			$sql[] = "GROUP BY $groupby";
 		/* ORDER */
 		if ($order)
 			$sql[] = "ORDER BY $order";

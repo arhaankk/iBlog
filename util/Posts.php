@@ -21,7 +21,15 @@ class Posts
 	 */
 	public function get(array $params, string | null $order='created_at DESC', int | null $limit=null)
 	{
-		$r = $this->db->select('*', 'blog', $params, $order);
+		/* Use magical joins to get views */
+		foreach ($params as $k => $v) {
+			unset($params[$k]);
+			$params["blog.$k"] = $v;
+		}
+		$fields = ['blog.id AS id', 'title', 'topic', 'content', 'blog.userId',
+				'blog.created_at AS created_at', 'updated_at',
+				'COUNT(postViews.userId) AS views'];
+		$r = $this->db->select($fields, 'blog LEFT JOIN postViews ON blog.id = postViews.blogId', $params, $order, groupby: 'blog.id');
 		return $r;
 	}
 
@@ -59,7 +67,6 @@ class Posts
 	 */
 	public function validate(array $post): string | null
 	{
-
 		/* Required fields */
 		$fields = ['title', 'topic', 'content', 'userId'];
 		foreach ($fields as $field)
