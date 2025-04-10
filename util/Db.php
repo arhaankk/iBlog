@@ -264,10 +264,11 @@ class Db
 	/**
 	 * Execute a insert query given a pile of parameters
 	 */
-	public function insert(string $target, array $values, array $ignore = []) : array
+	public function insert(string $target, array $values, array $ignore = []) : array | int
 	{
 		$query = \IB\Db::buildInsert($target, $values);
-		return $this->query($query['sql'], $query['params'], ignore: $ignore);
+		$this->query($query['sql'], $query['params'], ignore: $ignore);
+		return $this->conn->lastInsertId();
 	}
 
 	/**

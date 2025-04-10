@@ -34,6 +34,7 @@ INSERT INTO users (firstname, lastname, username, password, email, gender, age, 
 CREATE TABLE IF NOT EXISTS blog (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	title VARCHAR(255) NOT NULL,
+    topic VARCHAR(50) DEFAULT NULL,
 	content TEXT NOT NULL,
 	userId INT NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

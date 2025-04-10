@@ -46,6 +46,32 @@ class Posts
 		return $r;
 	}
 
+	/**
+	 * Add a post to the database and return the post ID.
+	 */
+	public function add(array $params)
+	{
+		return $this->db->insert('blog', $params);
+	}
+
+	/**
+	 * Validate a post.
+	 */
+	public function validate(array $post): string | null
+	{
+
+		/* Required fields */
+		$fields = ['title', 'topic', 'content', 'userId'];
+		foreach ($fields as $field)
+			if (!isset($post[$field]))
+				return "Missing required field $field";
+		/* Topics */
+		$topics = $this->app->config('topics');
+		if (!in_array($post['topic'], $topics))
+			return 'Invalid topic';
+		return null;
+	}
+
 	public static function getInstance(&$app)
 	{
 		if ($app->hasClass(static::class))

@@ -2,6 +2,7 @@
 require_once('../util/IB.php');
 $app = IB::app();
 $users = $app->getClass('IB\Users');
+$posts = $app->getClass('IB\Posts');
 $db = $app->getClass('IB\Db');
 $session = $app->getClass('IB\Session');
 if (!$session->isAuthenticated())
@@ -11,12 +12,13 @@ if (!$session->isAuthenticated())
 $userId = $session->getUser()['id'];
 $pdo = $db->connect();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = trim($_POST['title']);
-    $content = trim($_POST['content']);
+    foreach (['title', 'topic', 'content'] as $field)
+        if (!isset($_POST[$field]) || empty(trim($_POST[$field])))
+            $app->error("Missing field: $field", 'Invalid request', code: 401);
 
-    if (empty($title) || empty($content)) {
-        die("Title and content are required.");
-    }
+    $title = trim($_POST['title']);
+    $topic = trim($_POST['topic']);
+    $content = trim($_POST['content']);
 
     // Handle image uploads
     $imageBlobs = [];
@@ -53,18 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->beginTransaction();
 
         // Insert the blog post
-        $stmt = $pdo->prepare("
-            INSERT INTO blog (title, content, userId)
-            VALUES (:title, :content, :userId)
-        ");
-        $stmt->execute([
-            ':title' => $title,
-            ':content' => $content,
-            ':userId' => $userId,
-        ]);
-
-        // Get the last inserted ID
-        $postId = $pdo->lastInsertId();
+        $post = array(
+            'title' => $title,
+            'topic' => $topic,
+            'content' => $content,
+            'userId' => $userId);
+        $err = $posts->validate($post);
+        if ($err !== null)
+            $app->error($err, 'Invalid post', '', code: 401);
+        $postId = $posts->add($post);
 
         // Insert images into the imageDB table
         if (!empty($imageBlobs)) {
@@ -97,7 +96,7 @@ HTML;
     } catch (PDOException $e) {
         // Rollback transaction on error
         $pdo->rollBack();
-        die("Error creating blog post: " . $e->getMessage());
+        $app->error('An SQL error occurred while creating the blog post.', 'Internal error', $e->getMessage(), code: 500);
     }
 }
 
@@ -115,6 +114,15 @@ $page->preamble();
     <form id="blogForm" class="card" action="<?php echo $page->data('pages'); ?>/blog-write.php" method="POST" enctype="multipart/form-data">
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
+
+        <label for="topic">Topic:</label>
+        <select id="topic" name="topic" required>
+<?php
+    $topics = $app->config('topics');
+    foreach ($topics as $topic)
+        echo "<option>$topic</option>";
+?>
+        </select>
 
         <label for="content">Content:</label>
         <textarea id="content" class="writer" name="content" rows="10" required></textarea>
