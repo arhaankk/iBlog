@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		let data = await resp.json();
 
-		if (data.length > lastCommentCount && lastCommentCount !== -1) {
+		if (data.length > lastCommentCount && lastCommentCount > 0) {
 			alert("New comment(s)!");
 		}
 
