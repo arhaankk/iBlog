@@ -68,7 +68,7 @@ function generatePostHtml($post, $pdo, $full=true)
 	// Add comments
 	// These are handled dynamically by the client
 	if ($full) {
-		$html .= '<div class="comments"><h3>Comments</h3>';
+		$html .= '<div class="comments"><details open><summary><h3 style="display: inline;">Comments</h3></summary>';
 		$html .= '<p class="placeholder">Loading comments…</p>';
 		$postId = $post['id'];
 		$formStyle = !$session->isAuthenticated() ? ' style="display: none;"' : '';
@@ -80,7 +80,7 @@ function generatePostHtml($post, $pdo, $full=true)
 	</form>
 </div>
 form;
-		$html .= '</div>';
+		$html .= '</details></div>';
 	}
 	$html .= '</section>';
 

@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	form.addEventListener('submit', handleForm);
 	formSubmit.addEventListener('click', handleForm);
-	commentHeading.after(commentsContainer);
+	commentHeading.parentNode.after(commentsContainer);
 	loadComments();
 
 	setInterval(loadComments, 5000);
