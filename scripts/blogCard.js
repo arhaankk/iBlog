@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	const commentHeading = document.querySelector('.comments h3');
 	const commentsContainer = document.createElement('div');
 	const placeholder = document.querySelector(".comments .placeholder");
+	let lastCommentCount = -1;
+
 
 	let loadComments = async() => {
 		placeholder.value = 'Loading comments…';
@@ -15,7 +17,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			placeholder.value = 'Failed to load comments.';
 			return false;
 		}
-		data = await resp.json();
+		let data = await resp.json();
+
+		if (data.length > lastCommentCount && lastCommentCount !== -1) {
+			alert("New comment(s)!");
+		}
+
+		lastCommentCount = data.length;
 		commentsContainer.innerHTML = '';
 		for (let i = 0; i < data.length; i++) {
 			const v = data[i];
