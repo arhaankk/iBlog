@@ -23,13 +23,20 @@ $page->preamble();
 	<a href="<?php echo $page->data('pages'); ?>/admin.php" class="button">Admin Panel</a>
 	<?php } ?>
 	<hr>
-	<!-- TODO: Replace placeholder -->
 	<h2>Recent activity</h2>
 	<p>Look at all these posts happening on the platform!</p>
 	<?php
 		require_once('../util/blog-card.php');
 		$posts = $app->getClass('IB\Posts');
-		$cards = $posts->get([], limit: 10);
+		$cards = $posts->get([], limit: 5, order: 'created_at DESC');
+		foreach ($cards as $card)
+			echo generatePostHtml($card, null, false);
+	?>
+	<hr>
+	<h2>Popular posts</h2>
+	<p>These posts have received more views than any others!</p>
+	<?php
+		$cards = $posts->get([], limit: 5, order: 'views DESC');
 		foreach ($cards as $card)
 			echo generatePostHtml($card, null, false);
 	?>
